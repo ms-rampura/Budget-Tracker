@@ -7,6 +7,7 @@ import Home       from './pages/Home';
 import Add        from './pages/Add';
 import AllRecords from './pages/AllRecords';
 import About      from './pages/About';
+import AuditLogs  from './pages/AuditLogs';
 import Login      from './pages/Login';
 import Register   from './pages/Register';
 
@@ -48,6 +49,7 @@ function MainLayout({ children }: { children: React.ReactNode }) {
         <NavLink to="/"           className={({ isActive }) => isActive ? 'text-indigo-500 font-semibold' : 'text-gray-500'}>Home</NavLink>
         <NavLink to="/add"        className={({ isActive }) => isActive ? 'text-indigo-500 font-semibold' : 'text-gray-500'}>Add</NavLink>
         <NavLink to="/allrecords" className={({ isActive }) => isActive ? 'text-indigo-500 font-semibold' : 'text-gray-500'}>Records</NavLink>
+        <NavLink to="/audit"      className={({ isActive }) => isActive ? 'text-indigo-500 font-semibold' : 'text-gray-500'}>Audit</NavLink>
         <NavLink to="/about"      className={({ isActive }) => isActive ? 'text-indigo-500 font-semibold' : 'text-gray-500'}>About</NavLink>
       </nav>
     </>
@@ -68,6 +70,7 @@ export default function App() {
                 <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
                 <Route path="/add" element={<ProtectedRoute><Add /></ProtectedRoute>} />
                 <Route path="/allrecords" element={<ProtectedRoute><AllRecords /></ProtectedRoute>} />
+                <Route path="/audit" element={<ProtectedRoute><AuditLogs /></ProtectedRoute>} />
                 <Route path="/about" element={<ProtectedRoute><About /></ProtectedRoute>} />
               </Routes>
             </MainLayout>

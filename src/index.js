@@ -6,6 +6,7 @@ const recordsRouter = require('./routes/records');
 const authRouter    = require('./routes/auth');
 const accountsRouter= require('./routes/accounts');
 const categoriesRouter = require('./routes/categories');
+const auditRouter = require('./routes/audit');
 const app  = express();
 const PORT = process.env.PORT || 3001;
 
@@ -21,6 +22,7 @@ app.use('/api/records', recordsRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/accounts', accountsRouter);
 app.use('/api/categories', categoriesRouter);
+app.use('/api/audit', auditRouter);
 // Health check route
 app.get('/', (req, res) => res.json({ status: 'Finance API running' }));
 

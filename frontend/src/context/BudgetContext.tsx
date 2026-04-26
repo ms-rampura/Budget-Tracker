@@ -31,12 +31,25 @@ export interface Category {
   type: 'income' | 'expense';
 }
 
+export interface AuditLog {
+  id: number;
+  user_id: number;
+  record_id: number;
+  action: 'UPDATE' | 'DELETE';
+  old_amount: string | null;
+  new_amount: string | null;
+  old_type: string | null;
+  new_type: string | null;
+  timestamp: string;
+}
+
 interface BudgetContextType {
   balance:         number;
   records:         Record[];
   allRecords:      Record[];
   accounts:        Account[];
   categories:      Category[];
+  auditLogs:       AuditLog[];
   activeAccountId: number | null;
   setActiveAccountId: (id: number | null) => void;
   addRecord:       (amount: number, type: string, categoryId: number, accountId: number) => Promise<void>;
@@ -48,6 +61,7 @@ interface BudgetContextType {
   addAccount:      (name: string, type: string, initial_balance: number) => Promise<void>;
   fetchCategories: () => Promise<void>;
   addCategory:     (name: string, type: string) => Promise<Category>;
+  fetchAuditLogs:  () => Promise<void>;
 }
 
 const BudgetContext = createContext<BudgetContextType | null>(null);
@@ -60,6 +74,7 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
   const [allRecords, setAllRecords] = useState<Record[]>([]);
   const [accounts,   setAccounts]   = useState<Account[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [auditLogs,  setAuditLogs]  = useState<AuditLog[]>([]);
   const [activeAccountId, setActiveAccountId] = useState<number | null>(null);
 
   // Re-fetch data when authentication changes or active account changes
@@ -76,6 +91,7 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
       setAllRecords([]);
       setBalance(0);
       setActiveAccountId(null);
+      setAuditLogs([]);
     }
   }, [isAuthenticated, activeAccountId]);
 
@@ -92,6 +108,15 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
     const { data } = await axios.post(`http://localhost:3001${API}/categories`, { name, type });
     await fetchCategories();
     return data;
+  }
+
+  async function fetchAuditLogs() {
+    try {
+      const { data } = await axios.get(`http://localhost:3001${API}/audit`);
+      setAuditLogs(data);
+    } catch (err) {
+      console.error('Failed to fetch audit logs', err);
+    }
   }
 
   async function fetchAccounts() {
@@ -174,9 +199,9 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
 
   return (
     <BudgetContext.Provider value={{
-      balance, records, allRecords, accounts, categories, activeAccountId, setActiveAccountId,
+      balance, records, allRecords, accounts, categories, auditLogs, activeAccountId, setActiveAccountId,
       addRecord, updateRecord, deleteRecord,
-      fetchRecords, fetchAllRecords, fetchAccounts, addAccount, fetchCategories, addCategory
+      fetchRecords, fetchAllRecords, fetchAccounts, addAccount, fetchCategories, addCategory, fetchAuditLogs
     }}>
       {children}
     </BudgetContext.Provider>
