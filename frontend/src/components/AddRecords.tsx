@@ -72,7 +72,7 @@ export default function AddRecords() {
       {/* Submit */}
       <button
         onClick={handleSubmit}
-        disabled={!selectedAccountId}
+        disabled={!selectedAccountId || !amount || !categoryId}
         className="w-full py-3 rounded-xl font-bold text-white bg-indigo-500 hover:bg-indigo-600 disabled:bg-gray-400 transition-colors"
       >
         Add Transaction
