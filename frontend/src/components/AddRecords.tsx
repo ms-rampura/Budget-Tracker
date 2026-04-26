@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useBudget } from '../context/BudgetContext';
-import CategoryDropdownMenu, { INCOME_CATEGORIES, EXPENSE_CATEGORIES } from './CategoryDropdownMenu';
+import CategoryDropdownMenu from './CategoryDropdownMenu';
 
 export default function AddRecords() {
   const { addRecord, accounts, activeAccountId } = useBudget();
   const [type,      setType]     = useState<'income' | 'expense'>('income');
   const [amount,    setAmount]   = useState('');
-  const [category,  setCategory] = useState('');
-  const [customCat, setCustomCat] = useState('');
+  const [categoryId, setCategoryId] = useState<number | ''>('');
   const [success,   setSuccess]  = useState(false);
   const [selectedAccountId, setSelectedAccountId] = useState<number | ''>(activeAccountId || '');
 
@@ -17,16 +16,12 @@ export default function AddRecords() {
     }
   }, [activeAccountId, selectedAccountId]);
 
-  const isOther = category === 'Other Income' || category === 'Other Expense';
-
   async function handleSubmit() {
-    const finalCat = isOther ? customCat : category;
-    if (!amount || !finalCat || !selectedAccountId) return;
+    if (!amount || !categoryId || !selectedAccountId) return;
 
-    await addRecord(Number(amount), type, finalCat, Number(selectedAccountId));
+    await addRecord(Number(amount), type, Number(categoryId), Number(selectedAccountId));
     setAmount('');
-    setCategory('');
-    setCustomCat('');
+    setCategoryId('');
     setSuccess(true);
     setTimeout(() => setSuccess(false), 2000);
   }
@@ -50,7 +45,7 @@ export default function AddRecords() {
         {(['income', 'expense'] as const).map(t => (
           <button
             key={t}
-            onClick={() => { setType(t); setCategory(''); }}
+            onClick={() => { setType(t); setCategoryId(''); }}
             className={`flex-1 py-2 font-semibold capitalize transition-colors ${
               type === t
                 ? t === 'income' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
@@ -72,18 +67,7 @@ export default function AddRecords() {
       />
 
       {/* Category */}
-      <CategoryDropdownMenu type={type} selected={category} onSelect={setCategory} />
-
-      {/* Custom category input */}
-      {isOther && (
-        <input
-          type="text"
-          value={customCat}
-          onChange={e => setCustomCat(e.target.value)}
-          placeholder="Enter custom category"
-          className="w-full border border-gray-300 dark:border-gray-600 rounded-xl p-3 bg-transparent text-gray-900 dark:text-white"
-        />
-      )}
+      <CategoryDropdownMenu type={type} selected={categoryId} onSelect={setCategoryId} />
 
       {/* Submit */}
       <button

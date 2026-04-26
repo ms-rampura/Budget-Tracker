@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useBudget } from '../context/BudgetContext';
 import type { Record } from '../context/BudgetContext';
-import { INCOME_CATEGORIES, EXPENSE_CATEGORIES } from '../components/CategoryDropdownMenu';
+import CategoryDropdownMenu from '../components/CategoryDropdownMenu';
 
 export default function AllRecords() {
   const { allRecords, fetchAllRecords, updateRecord, deleteRecord } = useBudget();
   const [editTarget, setEditTarget] = useState<Record | null>(null);
   const [editAmount, setEditAmount] = useState('');
-  const [editType,   setEditType]   = useState('income');
-  const [editCat,    setEditCat]    = useState('');
+  const [editType,   setEditType]   = useState<'income' | 'expense'>('income');
+  const [editCatId,  setEditCatId]  = useState<number | ''>('');
 
   useEffect(() => { fetchAllRecords(); }, []);
 
@@ -16,12 +16,12 @@ export default function AllRecords() {
     setEditTarget(record);
     setEditAmount(String(record.amount));
     setEditType(record.type);
-    setEditCat(record.category);
+    setEditCatId(record.category_id || '');
   }
 
   async function handleUpdate() {
-    if (!editTarget) return;
-    await updateRecord(editTarget.id, Number(editAmount), editType, editCat);
+    if (!editTarget || !editCatId) return;
+    await updateRecord(editTarget.id, Number(editAmount), editType, Number(editCatId));
     setEditTarget(null);
   }
 
@@ -63,22 +63,19 @@ export default function AllRecords() {
 
             <select
               value={editType}
-              onChange={e => setEditType(e.target.value)}
+              onChange={e => {
+                setEditType(e.target.value as 'income' | 'expense');
+                setEditCatId('');
+              }}
               className="w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2 mb-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             >
               <option value="income">Income</option>
               <option value="expense">Expense</option>
             </select>
 
-            <select
-              value={editCat}
-              onChange={e => setEditCat(e.target.value)}
-              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2 mb-4 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-            >
-              {(editType === 'income' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES).map(c => (
-                <option key={c} value={c}>{c}</option>
-              ))}
-            </select>
+            <div className="mb-4">
+              <CategoryDropdownMenu type={editType} selected={editCatId} onSelect={setEditCatId} />
+            </div>
 
             <div className="flex gap-3">
               <button onClick={handleUpdate}          className="flex-1 bg-indigo-500 text-white rounded-lg py-2">Save</button>

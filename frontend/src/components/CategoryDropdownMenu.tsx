@@ -1,35 +1,44 @@
-export const INCOME_CATEGORIES = [
-  'Salary', 'Freelance', 'Investments', 'Business',
-  'Gifts', 'Savings Interest', 'Rental Income',
-  'Reimbursements', 'Cashback/Rewards', 'Other Income',
-];
-
-export const EXPENSE_CATEGORIES = [
-  'Food & Drinks', 'Transportation', 'Shopping', 'Groceries',
-  'Rent', 'Utilities', 'Entertainment', 'Health', 'Education',
-  'Subscriptions', 'Gifts & Donations', 'Travel',
-  'Insurance', 'Debt/Loans', 'Other Expense',
-];
+import { useBudget } from './../context/BudgetContext';
 
 interface Props {
   type:     'income' | 'expense';
-  selected: string;
-  onSelect: (cat: string) => void;
+  selected: number | '';
+  onSelect: (catId: number | '') => void;
 }
 
 export default function CategoryDropdownMenu({ type, selected, onSelect }: Props) {
-  const categories = type === 'income' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES;
+  const { categories, addCategory } = useBudget();
+  
+  // Filter categories by type
+  const filteredCategories = categories.filter(c => c.type === type);
+
+  const handleSelect = async (val: string) => {
+    if (val === 'NEW_CATEGORY') {
+      const name = window.prompt(`Enter new ${type} category name:`);
+      if (name) {
+        const newCat = await addCategory(name, type);
+        onSelect(newCat.id);
+      } else {
+        onSelect('');
+      }
+    } else {
+      onSelect(Number(val));
+    }
+  };
 
   return (
     <select
-      value={selected}
-      onChange={e => onSelect(e.target.value)}
+      value={selected === '' ? '' : selected}
+      onChange={e => handleSelect(e.target.value)}
       className="w-full border border-gray-300 dark:border-gray-600 rounded-xl p-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
     >
       <option value="" disabled>Select a category</option>
-      {categories.map(cat => (
-        <option key={cat} value={cat}>{cat}</option>
+      {filteredCategories.map(cat => (
+        <option key={cat.id} value={cat.id}>{cat.name}</option>
       ))}
+      <option value="NEW_CATEGORY" className="font-bold text-emerald-500">
+        + Create New Category
+      </option>
     </select>
   );
 }

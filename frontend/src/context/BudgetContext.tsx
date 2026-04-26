@@ -10,6 +10,7 @@ export interface Record {
   account_id: number;
   amount:   number;
   type:     'income' | 'expense';
+  category_id: number;
   category: string;
   time:     string;
   bal:      number;
@@ -23,20 +24,30 @@ export interface Account {
   balance: string | number; // MySQL decimals come as strings sometimes
 }
 
+export interface Category {
+  id: number;
+  user_id: number;
+  name: string;
+  type: 'income' | 'expense';
+}
+
 interface BudgetContextType {
   balance:         number;
   records:         Record[];
   allRecords:      Record[];
   accounts:        Account[];
+  categories:      Category[];
   activeAccountId: number | null;
   setActiveAccountId: (id: number | null) => void;
-  addRecord:       (amount: number, type: string, category: string, accountId: number) => Promise<void>;
-  updateRecord:    (id: number, amount: number, type: string, category: string) => Promise<void>;
+  addRecord:       (amount: number, type: string, categoryId: number, accountId: number) => Promise<void>;
+  updateRecord:    (id: number, amount: number, type: string, categoryId: number) => Promise<void>;
   deleteRecord:    (id: number) => Promise<void>;
   fetchRecords:    () => Promise<void>;
   fetchAllRecords: () => Promise<void>;
   fetchAccounts:   () => Promise<void>;
   addAccount:      (name: string, type: string, initial_balance: number) => Promise<void>;
+  fetchCategories: () => Promise<void>;
+  addCategory:     (name: string, type: string) => Promise<Category>;
 }
 
 const BudgetContext = createContext<BudgetContextType | null>(null);
@@ -48,22 +59,40 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
   const [records,    setRecords]    = useState<Record[]>([]);
   const [allRecords, setAllRecords] = useState<Record[]>([]);
   const [accounts,   setAccounts]   = useState<Account[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [activeAccountId, setActiveAccountId] = useState<number | null>(null);
 
   // Re-fetch data when authentication changes or active account changes
   useEffect(() => {
     if (isAuthenticated) {
       fetchAccounts();
+      fetchCategories();
       fetchBalance();
       fetchRecords();
     } else {
       setAccounts([]);
+      setCategories([]);
       setRecords([]);
       setAllRecords([]);
       setBalance(0);
       setActiveAccountId(null);
     }
   }, [isAuthenticated, activeAccountId]);
+
+  async function fetchCategories() {
+    try {
+      const { data } = await axios.get(`http://localhost:3001${API}/categories`);
+      setCategories(data);
+    } catch (err) {
+      console.error('Failed to fetch categories', err);
+    }
+  }
+
+  async function addCategory(name: string, type: string) {
+    const { data } = await axios.post(`http://localhost:3001${API}/categories`, { name, type });
+    await fetchCategories();
+    return data;
+  }
 
   async function fetchAccounts() {
     try {
@@ -120,15 +149,15 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  async function addRecord(amount: number, type: string, category: string, accountId: number) {
-    await axios.post(`http://localhost:3001${API}/records`, { amount, type, category, account_id: accountId });
+  async function addRecord(amount: number, type: string, categoryId: number, accountId: number) {
+    await axios.post(`http://localhost:3001${API}/records`, { amount, type, category_id: categoryId, account_id: accountId });
     await fetchAccounts();
     await fetchRecords();
     await fetchBalance();
   }
 
-  async function updateRecord(id: number, amount: number, type: string, category: string) {
-    await axios.put(`http://localhost:3001${API}/records/${id}`, { amount, type, category });
+  async function updateRecord(id: number, amount: number, type: string, categoryId: number) {
+    await axios.put(`http://localhost:3001${API}/records/${id}`, { amount, type, category_id: categoryId });
     await fetchAccounts();
     await fetchRecords();
     await fetchAllRecords();
@@ -145,9 +174,9 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
 
   return (
     <BudgetContext.Provider value={{
-      balance, records, allRecords, accounts, activeAccountId, setActiveAccountId,
+      balance, records, allRecords, accounts, categories, activeAccountId, setActiveAccountId,
       addRecord, updateRecord, deleteRecord,
-      fetchRecords, fetchAllRecords, fetchAccounts, addAccount
+      fetchRecords, fetchAllRecords, fetchAccounts, addAccount, fetchCategories, addCategory
     }}>
       {children}
     </BudgetContext.Provider>

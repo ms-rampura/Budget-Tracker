@@ -48,6 +48,24 @@ router.post('/register', async (req, res) => {
       [userId, 'Bank', 'bank', 0.00]
     );
 
+    // Seed default categories
+    const defaultCategories = [
+      ['Salary', 'income'],
+      ['Freelance', 'income'],
+      ['Food & Drinks', 'expense'],
+      ['Transportation', 'expense'],
+      ['Shopping', 'expense'],
+      ['Rent', 'expense'],
+      ['Entertainment', 'expense']
+    ];
+
+    for (const [name, type] of defaultCategories) {
+      await pool.query(
+        'INSERT INTO categories (user_id, name, type) VALUES (?, ?, ?)',
+        [userId, name, type]
+      );
+    }
+
     // Create JWT Payload
     const payload = {
       user: {

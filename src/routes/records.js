@@ -6,21 +6,35 @@ const auth    = require('../middleware/auth');
 // Apply auth middleware
 router.use(auth);
 
+// Helper function to format records with joined category name
+const formatRecords = (rows) => {
+  return rows.map(row => ({
+    ...row,
+    // If it has a category_id, use the joined name. Otherwise fall back to the old string.
+    category: row.category_name || row.category
+  }));
+};
+
 // ─── GET /api/records ───────────────────────────────────────────────────────
 router.get('/', async (req, res) => {
   const accountId = req.query.account_id; // optional
   try {
-    let query = `SELECT * FROM records WHERE user_id = ? AND time >= DATE_SUB(NOW(), INTERVAL 30 DAY)`;
+    let query = `
+      SELECT r.*, c.name as category_name 
+      FROM records r
+      LEFT JOIN categories c ON r.category_id = c.id
+      WHERE r.user_id = ? AND r.time >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+    `;
     const params = [req.user.id];
 
     if (accountId) {
-      query += ` AND account_id = ?`;
+      query += ` AND r.account_id = ?`;
       params.push(accountId);
     }
-    query += ` ORDER BY time DESC`;
+    query += ` ORDER BY r.time DESC`;
 
     const [rows] = await pool.query(query, params);
-    res.json(rows);
+    res.json(formatRecords(rows));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -30,17 +44,22 @@ router.get('/', async (req, res) => {
 router.get('/all', async (req, res) => {
   const accountId = req.query.account_id;
   try {
-    let query = `SELECT * FROM records WHERE user_id = ?`;
+    let query = `
+      SELECT r.*, c.name as category_name 
+      FROM records r
+      LEFT JOIN categories c ON r.category_id = c.id
+      WHERE r.user_id = ?
+    `;
     const params = [req.user.id];
 
     if (accountId) {
-      query += ` AND account_id = ?`;
+      query += ` AND r.account_id = ?`;
       params.push(accountId);
     }
-    query += ` ORDER BY time DESC`;
+    query += ` ORDER BY r.time DESC`;
 
     const [rows] = await pool.query(query, params);
-    res.json(rows);
+    res.json(formatRecords(rows));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -63,10 +82,11 @@ router.get('/balance', async (req, res) => {
 
 // ─── POST /api/records ───────────────────────────────────────────────────────
 router.post('/', async (req, res) => {
-  const { amount, type, category, account_id } = req.body;
+  // We now accept category_id instead of a category string
+  const { amount, type, category_id, account_id } = req.body;
 
-  if (!amount || !type || !category || !account_id) {
-    return res.status(400).json({ error: 'amount, type, category, and account_id are required' });
+  if (!amount || !type || !category_id || !account_id) {
+    return res.status(400).json({ error: 'amount, type, category_id, and account_id are required' });
   }
 
   const connection = await pool.getConnection();
@@ -96,11 +116,11 @@ router.post('/', async (req, res) => {
       [newBal, account_id]
     );
 
-    // Insert record
+    // Insert record (we set the old `category` column to empty string for NOT NULL constraints)
     const [result] = await connection.query(
-      `INSERT INTO records (user_id, account_id, amount, type, category, time, bal)
-       VALUES (?, ?, ?, ?, ?, NOW(), ?)`,
-      [req.user.id, account_id, parsedAmount, type, category, newBal]
+      `INSERT INTO records (user_id, account_id, amount, type, category_id, category, time, bal)
+       VALUES (?, ?, ?, ?, ?, '', NOW(), ?)`,
+      [req.user.id, account_id, parsedAmount, type, category_id, newBal]
     );
 
     await connection.commit();
@@ -116,7 +136,7 @@ router.post('/', async (req, res) => {
 // ─── PUT /api/records/:id ────────────────────────────────────────────────────
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { amount, type, category } = req.body;
+  const { amount, type, category_id } = req.body;
 
   const connection = await pool.getConnection();
   try {
@@ -137,6 +157,7 @@ router.put('/:id', async (req, res) => {
     const newAmount = parseFloat(amount || oldAmount);
     const newType = type || oldRecord.type;
     const accountId = oldRecord.account_id;
+    const newCategoryId = category_id || oldRecord.category_id;
 
     // Fetch current account balance
     const [accounts] = await connection.query(
@@ -163,8 +184,8 @@ router.put('/:id', async (req, res) => {
 
     // Update record
     await connection.query(
-      `UPDATE records SET amount = ?, type = ?, category = ?, bal = ? WHERE id = ?`,
-      [newAmount, newType, category || oldRecord.category, accountBal, id]
+      `UPDATE records SET amount = ?, type = ?, category_id = ?, bal = ? WHERE id = ?`,
+      [newAmount, newType, newCategoryId, accountBal, id]
     );
 
     await connection.commit();
