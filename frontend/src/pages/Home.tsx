@@ -1,8 +1,9 @@
+"use client";
 import { useState, useMemo } from 'react';
-import { useBudget }    from '../context/BudgetContext';
-import { useTheme }     from '../context/ThemeContext';
-import LastRecordsCard   from '../components/LastRecordsCard';
-import LineGraph         from '../components/LineGraph';
+import { useBudget } from '../context/BudgetContext';
+import { useTheme } from '../context/ThemeContext';
+import LastRecordsCard from '../components/LastRecordsCard';
+import LineGraph from '../components/LineGraph';
 import { MdAccountBalance, MdPayments, MdShoppingCart, MdSavings, MdTrendingUp, MdLightMode, MdDarkMode } from 'react-icons/md';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip } from 'recharts';
 
@@ -24,7 +25,7 @@ export default function Home() {
   // Calculate some basic mock stats for the cards based on actual records
   const incomeRecords = records.filter(r => r.type === 'income');
   const expenseRecords = records.filter(r => r.type === 'expense');
-  
+
   const totalIncome = incomeRecords.reduce((sum, r) => sum + Number(r.amount), 0);
   const totalExpense = expenseRecords.reduce((sum, r) => sum + Number(r.amount), 0);
 
@@ -32,8 +33,8 @@ export default function Home() {
   const pieData = useMemo(() => {
     const relevantRecords = pieType === 'expense' ? expenseRecords : incomeRecords;
     const grouped = relevantRecords.reduce((acc, record) => {
-      acc[record.category] = (acc[record.category] || 0) + record.amount;
-      return acc;
+      acc[record.category] =
+        (acc[record.category] || 0) + Number(record.amount); return acc;
     }, {} as Record<string, number>);
 
     return Object.entries(grouped)
@@ -61,7 +62,7 @@ export default function Home() {
                 <option key={acc.id} value={acc.id}>{acc.name} ({acc.type})</option>
               ))}
             </select>
-            <button 
+            <button
               onClick={handleAddWallet}
               className="px-4 py-2 text-xs font-bold bg-blue-600 dark:bg-primary text-white rounded-lg active:scale-95 transition-all"
             >
@@ -133,23 +134,23 @@ export default function Home() {
             </div>
           </div>
           <div className="h-64">
-             <LineGraph records={records} />
+            <LineGraph records={records} />
           </div>
         </div>
 
         <div className="col-span-12 lg:col-span-4 bg-white dark:bg-surface-container rounded-xl p-card-padding border border-slate-100 dark:border-slate-800 shadow-sm transition-colors duration-200 flex flex-col min-h-[180px]">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-h3 text-slate-800 dark:text-white">Breakdown</h3>
-            
+
             {/* Pill Toggle */}
             <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-full text-xs font-bold transition-colors">
-              <button 
+              <button
                 onClick={() => setPieType('expense')}
                 className={`px-3 py-1 rounded-full transition-colors ${pieType === 'expense' ? 'bg-white dark:bg-slate-700 text-slate-800 dark:text-white shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'}`}
               >
                 Expense
               </button>
-              <button 
+              <button
                 onClick={() => setPieType('income')}
                 className={`px-3 py-1 rounded-full transition-colors ${pieType === 'income' ? 'bg-white dark:bg-slate-700 text-slate-800 dark:text-white shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'}`}
               >
@@ -157,7 +158,7 @@ export default function Home() {
               </button>
             </div>
           </div>
-          
+
           <div className="flex-1 flex flex-col justify-center w-full">
             <div className="h-48 w-full relative">
               {pieData.length > 0 ? (
@@ -178,11 +179,11 @@ export default function Home() {
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
-                    <RechartsTooltip 
-                      contentStyle={{ 
-                        backgroundColor: isDark ? '#1e293b' : '#ffffff', 
-                        border: isDark ? 'none' : '1px solid #e2e8f0', 
-                        borderRadius: '0.5rem', 
+                    <RechartsTooltip
+                      contentStyle={{
+                        backgroundColor: isDark ? '#1e293b' : '#ffffff',
+                        border: isDark ? 'none' : '1px solid #e2e8f0',
+                        borderRadius: '0.5rem',
                         color: isDark ? '#f1f5f9' : '#1e293b',
                         boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)'
                       }}
@@ -204,11 +205,11 @@ export default function Home() {
                       stroke="none"
                       fill={isDark ? '#334155' : '#e2e8f0'}
                     />
-                    <RechartsTooltip 
-                      contentStyle={{ 
-                        backgroundColor: isDark ? '#1e293b' : '#ffffff', 
-                        border: isDark ? 'none' : '1px solid #e2e8f0', 
-                        borderRadius: '0.5rem', 
+                    <RechartsTooltip
+                      contentStyle={{
+                        backgroundColor: isDark ? '#1e293b' : '#ffffff',
+                        border: isDark ? 'none' : '1px solid #e2e8f0',
+                        borderRadius: '0.5rem',
                         color: isDark ? '#f1f5f9' : '#1e293b'
                       }}
                       formatter={() => ['No transactions yet', 'Status']}
@@ -222,7 +223,7 @@ export default function Home() {
                 </div>
               )}
             </div>
-            
+
             {/* Legend */}
             <div className="mt-4 flex flex-wrap justify-center gap-2 min-h-[24px]">
               {pieData.length > 0 ? pieData.slice(0, 4).map((entry, index) => (
@@ -244,7 +245,7 @@ export default function Home() {
       {/* Recent Transactions */}
       <div className="bg-white dark:bg-surface-container rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden p-6 transition-colors duration-200">
         <div className="flex justify-between items-center mb-4">
-           <h3 className="font-h3 text-slate-800 dark:text-white">Recent Transactions</h3>
+          <h3 className="font-h3 text-slate-800 dark:text-white">Recent Transactions</h3>
         </div>
         <LastRecordsCard records={records} />
       </div>
