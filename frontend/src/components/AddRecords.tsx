@@ -1,22 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useBudget } from '../context/BudgetContext';
 import CategoryDropdownMenu, { INCOME_CATEGORIES, EXPENSE_CATEGORIES } from './CategoryDropdownMenu';
 
 export default function AddRecords() {
-  const { addRecord } = useBudget();
+  const { addRecord, accounts, activeAccountId } = useBudget();
   const [type,      setType]     = useState<'income' | 'expense'>('income');
   const [amount,    setAmount]   = useState('');
   const [category,  setCategory] = useState('');
   const [customCat, setCustomCat] = useState('');
   const [success,   setSuccess]  = useState(false);
+  const [selectedAccountId, setSelectedAccountId] = useState<number | ''>(activeAccountId || '');
+
+  useEffect(() => {
+    if (activeAccountId && !selectedAccountId) {
+      setSelectedAccountId(activeAccountId);
+    }
+  }, [activeAccountId, selectedAccountId]);
 
   const isOther = category === 'Other Income' || category === 'Other Expense';
 
   async function handleSubmit() {
     const finalCat = isOther ? customCat : category;
-    if (!amount || !finalCat) return;
+    if (!amount || !finalCat || !selectedAccountId) return;
 
-    await addRecord(Number(amount), type, finalCat);
+    await addRecord(Number(amount), type, finalCat, Number(selectedAccountId));
     setAmount('');
     setCategory('');
     setCustomCat('');
@@ -26,6 +33,18 @@ export default function AddRecords() {
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow space-y-4">
+      {/* Wallet Selector */}
+      <select
+        value={selectedAccountId}
+        onChange={(e) => setSelectedAccountId(Number(e.target.value))}
+        className="w-full border border-gray-300 dark:border-gray-600 rounded-xl p-3 bg-transparent text-gray-900 dark:text-white"
+      >
+        <option value="" disabled>Select Wallet</option>
+        {accounts.map(acc => (
+          <option key={acc.id} value={acc.id}>{acc.name} ({acc.type})</option>
+        ))}
+      </select>
+
       {/* Income / Expense Toggle */}
       <div className="flex rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
         {(['income', 'expense'] as const).map(t => (
@@ -69,7 +88,8 @@ export default function AddRecords() {
       {/* Submit */}
       <button
         onClick={handleSubmit}
-        className="w-full py-3 rounded-xl font-bold text-white bg-indigo-500 hover:bg-indigo-600 transition-colors"
+        disabled={!selectedAccountId}
+        className="w-full py-3 rounded-xl font-bold text-white bg-indigo-500 hover:bg-indigo-600 disabled:bg-gray-400 transition-colors"
       >
         Add Transaction
       </button>

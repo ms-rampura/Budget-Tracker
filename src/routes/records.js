@@ -1,17 +1,25 @@
 const express = require('express');
 const router  = express.Router();
 const pool    = require('../db');
+const auth    = require('../middleware/auth');
+
+// Apply auth middleware
+router.use(auth);
 
 // ─── GET /api/records ───────────────────────────────────────────────────────
-// Returns the last 30 days of records, newest first.
-// Replaces: fetchRecords() in budgetContext
 router.get('/', async (req, res) => {
+  const accountId = req.query.account_id; // optional
   try {
-    const [rows] = await pool.query(
-      `SELECT * FROM records
-       WHERE time >= DATE_SUB(NOW(), INTERVAL 30 DAY)
-       ORDER BY time DESC`
-    );
+    let query = `SELECT * FROM records WHERE user_id = ? AND time >= DATE_SUB(NOW(), INTERVAL 30 DAY)`;
+    const params = [req.user.id];
+
+    if (accountId) {
+      query += ` AND account_id = ?`;
+      params.push(accountId);
+    }
+    query += ` ORDER BY time DESC`;
+
+    const [rows] = await pool.query(query, params);
     res.json(rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -19,11 +27,19 @@ router.get('/', async (req, res) => {
 });
 
 // ─── GET /api/records/all ────────────────────────────────────────────────────
-// Returns ALL records.
-// Replaces: fetchAllRecords() in budgetContext
 router.get('/all', async (req, res) => {
+  const accountId = req.query.account_id;
   try {
-    const [rows] = await pool.query(`SELECT * FROM records ORDER BY time DESC`);
+    let query = `SELECT * FROM records WHERE user_id = ?`;
+    const params = [req.user.id];
+
+    if (accountId) {
+      query += ` AND account_id = ?`;
+      params.push(accountId);
+    }
+    query += ` ORDER BY time DESC`;
+
+    const [rows] = await pool.query(query, params);
     res.json(rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -31,14 +47,14 @@ router.get('/all', async (req, res) => {
 });
 
 // ─── GET /api/records/balance ─────────────────────────────────────────────
-// Returns the current balance (the `bal` of the most recent record).
-// Replaces: the balance derived from records in budgetContext
+// Returns total balance across all accounts for the user
 router.get('/balance', async (req, res) => {
   try {
     const [rows] = await pool.query(
-      `SELECT bal FROM records ORDER BY time DESC LIMIT 1`
+      `SELECT SUM(balance) as total_balance FROM accounts WHERE user_id = ?`,
+      [req.user.id]
     );
-    const balance = rows.length > 0 ? rows[0].bal : 0;
+    const balance = rows[0].total_balance || 0;
     res.json({ balance });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -46,84 +62,172 @@ router.get('/balance', async (req, res) => {
 });
 
 // ─── POST /api/records ───────────────────────────────────────────────────────
-// Adds a new transaction.
-// Replaces: addRecords() in budgetContext
-// Body: { amount, type, category }
 router.post('/', async (req, res) => {
-  const { amount, type, category } = req.body;
+  const { amount, type, category, account_id } = req.body;
 
-  if (!amount || !type || !category) {
-    return res.status(400).json({ error: 'amount, type, and category are required' });
+  if (!amount || !type || !category || !account_id) {
+    return res.status(400).json({ error: 'amount, type, category, and account_id are required' });
   }
 
+  const connection = await pool.getConnection();
   try {
-    // Get the current balance from the last record
-    const [lastRow] = await pool.query(
-      `SELECT bal FROM records ORDER BY time DESC LIMIT 1`
+    await connection.beginTransaction();
+
+    // Verify account ownership
+    const [accounts] = await connection.query(
+      'SELECT balance FROM accounts WHERE id = ? AND user_id = ?',
+      [account_id, req.user.id]
     );
-    const currentBal = lastRow.length > 0 ? lastRow[0].bal : 0;
+
+    if (accounts.length === 0) {
+      throw new Error('Account not found or unauthorized');
+    }
+
+    const currentBal = parseFloat(accounts[0].balance);
+    const parsedAmount = parseFloat(amount);
+    
     const newBal = type === 'income'
-      ? currentBal + amount
-      : currentBal - amount;
+      ? currentBal + parsedAmount
+      : currentBal - parsedAmount;
 
-    const [result] = await pool.query(
-      `INSERT INTO records (amount, type, category, time, bal)
-       VALUES (?, ?, ?, NOW(), ?)`,
-      [amount, type, category, newBal]
+    // Update account balance
+    await connection.query(
+      'UPDATE accounts SET balance = ? WHERE id = ?',
+      [newBal, account_id]
     );
 
+    // Insert record
+    const [result] = await connection.query(
+      `INSERT INTO records (user_id, account_id, amount, type, category, time, bal)
+       VALUES (?, ?, ?, ?, ?, NOW(), ?)`,
+      [req.user.id, account_id, parsedAmount, type, category, newBal]
+    );
+
+    await connection.commit();
     res.status(201).json({ id: result.insertId, bal: newBal });
   } catch (err) {
+    await connection.rollback();
     res.status(500).json({ error: err.message });
+  } finally {
+    connection.release();
   }
 });
 
 // ─── PUT /api/records/:id ────────────────────────────────────────────────────
-// Updates an existing record.
-// Replaces: updateRecord() in budgetContext
-// Body: { amount, type, category }
 router.put('/:id', async (req, res) => {
-  const { id }                     = req.params;
+  const { id } = req.params;
   const { amount, type, category } = req.body;
 
+  const connection = await pool.getConnection();
   try {
+    await connection.beginTransaction();
+
     // Fetch the record being edited
-    const [target] = await pool.query(`SELECT * FROM records WHERE id = ?`, [id]);
-    if (target.length === 0) return res.status(404).json({ error: 'Record not found' });
-
-    // Get the balance just BEFORE this record
-    const [prev] = await pool.query(
-      `SELECT bal FROM records WHERE time < ? ORDER BY time DESC LIMIT 1`,
-      [target[0].time]
+    const [target] = await connection.query(
+      `SELECT * FROM records WHERE id = ? AND user_id = ?`, 
+      [id, req.user.id]
     );
-    const balBefore = prev.length > 0 ? prev[0].bal : 0;
+    
+    if (target.length === 0) {
+      throw new Error('Record not found or unauthorized');
+    }
 
-    // Recalculate the balance for this record with the new values
-    const updatedBal = type === 'income'
-      ? balBefore + amount
-      : balBefore - amount;
+    const oldRecord = target[0];
+    const oldAmount = parseFloat(oldRecord.amount);
+    const newAmount = parseFloat(amount || oldAmount);
+    const newType = type || oldRecord.type;
+    const accountId = oldRecord.account_id;
 
-    await pool.query(
+    // Fetch current account balance
+    const [accounts] = await connection.query(
+      'SELECT balance FROM accounts WHERE id = ?',
+      [accountId]
+    );
+    let accountBal = parseFloat(accounts[0].balance);
+
+    // Reverse old record effect
+    accountBal = oldRecord.type === 'income'
+      ? accountBal - oldAmount
+      : accountBal + oldAmount;
+
+    // Apply new record effect
+    accountBal = newType === 'income'
+      ? accountBal + newAmount
+      : accountBal - newAmount;
+
+    // Update account
+    await connection.query(
+      'UPDATE accounts SET balance = ? WHERE id = ?',
+      [accountBal, accountId]
+    );
+
+    // Update record
+    await connection.query(
       `UPDATE records SET amount = ?, type = ?, category = ?, bal = ? WHERE id = ?`,
-      [amount, type, category, updatedBal, id]
+      [newAmount, newType, category || oldRecord.category, accountBal, id]
     );
 
-    res.json({ success: true, bal: updatedBal });
+    await connection.commit();
+    res.json({ success: true, bal: accountBal });
   } catch (err) {
+    await connection.rollback();
     res.status(500).json({ error: err.message });
+  } finally {
+    connection.release();
   }
 });
 
 // ─── DELETE /api/records/:id ──────────────────────────────────────────────────
-// Deletes a record.
-// Replaces: deleteRecord() in budgetContext
 router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+
+  const connection = await pool.getConnection();
   try {
-    const [result] = await pool.query(`DELETE FROM records WHERE id = ?`, [req.params.id]);
-    if (result.affectedRows === 0) return res.status(404).json({ error: 'Record not found' });
+    await connection.beginTransaction();
+
+    // Fetch the record
+    const [target] = await connection.query(
+      `SELECT * FROM records WHERE id = ? AND user_id = ?`, 
+      [id, req.user.id]
+    );
+    
+    if (target.length === 0) {
+      throw new Error('Record not found or unauthorized');
+    }
+
+    const oldRecord = target[0];
+    const accountId = oldRecord.account_id;
+    const amount = parseFloat(oldRecord.amount);
+
+    // Fetch current account balance
+    const [accounts] = await connection.query(
+      'SELECT balance FROM accounts WHERE id = ?',
+      [accountId]
+    );
+    
+    let accountBal = parseFloat(accounts[0].balance);
+
+    // Reverse record effect
+    accountBal = oldRecord.type === 'income'
+      ? accountBal - amount
+      : accountBal + amount;
+
+    // Update account
+    await connection.query(
+      'UPDATE accounts SET balance = ? WHERE id = ?',
+      [accountBal, accountId]
+    );
+
+    // Delete record
+    await connection.query(`DELETE FROM records WHERE id = ?`, [id]);
+
+    await connection.commit();
     res.json({ success: true });
   } catch (err) {
+    await connection.rollback();
     res.status(500).json({ error: err.message });
+  } finally {
+    connection.release();
   }
 });
 

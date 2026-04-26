@@ -3,7 +3,8 @@ const cors    = require('cors');
 require('dotenv').config();
 
 const recordsRouter = require('./routes/records');
-
+const authRouter    = require('./routes/auth');
+const accountsRouter= require('./routes/accounts');
 const app  = express();
 const PORT = process.env.PORT || 3001;
 
@@ -16,7 +17,8 @@ app.use(cors({ origin: 'http://localhost:5173' }));
 
 // Mount the records API at /api/records
 app.use('/api/records', recordsRouter);
-
+app.use('/api/auth', authRouter);
+app.use('/api/accounts', accountsRouter);
 // Health check route
 app.get('/', (req, res) => res.json({ status: 'Finance API running' }));
 
