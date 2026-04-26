@@ -25,8 +25,8 @@ export default function Home() {
   const incomeRecords = records.filter(r => r.type === 'income');
   const expenseRecords = records.filter(r => r.type === 'expense');
   
-  const totalIncome = incomeRecords.reduce((sum, r) => sum + r.amount, 0);
-  const totalExpense = expenseRecords.reduce((sum, r) => sum + r.amount, 0);
+  const totalIncome = incomeRecords.reduce((sum, r) => sum + Number(r.amount), 0);
+  const totalExpense = expenseRecords.reduce((sum, r) => sum + Number(r.amount), 0);
 
   // Calculate pie chart data
   const pieData = useMemo(() => {
@@ -79,7 +79,7 @@ export default function Home() {
       </div>
 
       {/* Summary Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-gutter mb-8">
         <div className="bg-white dark:bg-surface-container rounded-xl p-card-padding border border-slate-100 dark:border-slate-800 shadow-sm transition-colors duration-200">
           <div className="flex justify-between items-start mb-4">
             <div className="p-2 bg-blue-50 dark:bg-primary/10 rounded-lg">
@@ -121,24 +121,6 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-surface-container rounded-xl p-card-padding border border-slate-100 dark:border-slate-800 shadow-sm transition-colors duration-200">
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-2 bg-sky-50 dark:bg-blue-400/10 rounded-lg">
-              <MdSavings className="text-sky-500 dark:text-blue-400 text-xl" />
-            </div>
-            <span className="text-xs font-bold text-sky-500 bg-sky-50 dark:text-blue-400 dark:bg-blue-400/10 px-2 py-1 rounded">Target: 80%</span>
-          </div>
-          <p className="text-slate-500 dark:text-secondary font-label-sm uppercase mb-1">Savings Goal</p>
-          <h2 className="font-h2 text-slate-800 dark:text-white">Rs. 100,000</h2>
-          <div className="mt-4 flex items-center justify-between">
-            <div className="flex gap-1">
-              <div className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-primary"></div>
-              <div className="w-1.5 h-1.5 rounded-full bg-blue-600/40 dark:bg-primary/40"></div>
-              <div className="w-1.5 h-1.5 rounded-full bg-blue-600/20 dark:bg-primary/20"></div>
-            </div>
-            <span className="text-[10px] text-slate-400 dark:text-slate-500">Goal: New Car</span>
-          </div>
-        </div>
       </div>
 
       {/* Middle Section: Graph and Addons */}
