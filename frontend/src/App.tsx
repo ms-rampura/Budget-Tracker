@@ -1,15 +1,15 @@
 import { BrowserRouter, Routes, Route, NavLink, Navigate, useLocation } from 'react-router-dom';
 import { BudgetProvider } from './context/BudgetContext';
-import { ThemeProvider }  from './context/ThemeContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import { useContext } from 'react';
-import Home       from './pages/Home';
-import Add        from './pages/Add';
+import Home from './pages/Home';
+import Add from './pages/Add';
 import AllRecords from './pages/AllRecords';
-import About      from './pages/About';
-import AuditLogs  from './pages/AuditLogs';
-import Login      from './pages/Login';
-import Register   from './pages/Register';
+import About from './pages/About';
+import AuditLogs from './pages/AuditLogs';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, loading } = useContext(AuthContext);
@@ -54,7 +54,7 @@ function MainLayout({ children }: { children: React.ReactNode }) {
               <p className="text-[10px] uppercase tracking-widest text-slate-500 dark:text-secondary">Enterprise Edition</p>
             </div>
           </div>
-          
+
           <nav className="flex-1 space-y-2">
             <NavLink to="/" className={({ isActive }) => `flex items-center gap-3 px-4 py-2.5 font-manrope font-medium text-[14px] rounded-lg transition-all duration-200 ${isActive ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-primary hover:translate-x-1' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 hover:text-blue-600 hover:translate-x-1'}`}>
               <MdDashboard className="text-xl" />
@@ -98,7 +98,7 @@ function MainLayout({ children }: { children: React.ReactNode }) {
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip 
+                  <Tooltip
                     contentStyle={{ backgroundColor: 'var(--tw-colors-slate-800, #1e293b)', border: 'none', borderRadius: '0.5rem', color: '#f1f5f9' }}
                     itemStyle={{ color: '#f1f5f9' }}
                   />
@@ -126,16 +126,16 @@ function MainLayout({ children }: { children: React.ReactNode }) {
         <div className="flex items-center gap-4">
           <div className="relative">
             <MdSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-lg" />
-            <input className="bg-slate-100 dark:bg-slate-800 border-none rounded-xl pl-10 pr-4 py-2 text-sm text-slate-700 dark:text-on-surface focus:ring-2 focus:ring-blue-500 dark:focus:ring-primary w-64 transition-colors duration-200" placeholder="Search financials..." type="text"/>
+            <input className="bg-slate-100 dark:bg-slate-800 border-none rounded-xl pl-10 pr-4 py-2 text-sm text-slate-700 dark:text-on-surface focus:ring-2 focus:ring-blue-500 dark:focus:ring-primary w-64 transition-colors duration-200" placeholder="Search financials..." type="text" />
           </div>
         </div>
-        
+
         <div className="flex items-center gap-6">
           <button className="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors relative">
             <MdNotifications className="text-xl" />
             <span className="absolute top-0 right-0 w-2 h-2 bg-blue-600 dark:bg-primary rounded-full border-2 border-white dark:border-slate-900"></span>
           </button>
-          
+
           <div className="flex items-center gap-3 pl-6 border-l border-slate-200 dark:border-slate-800 transition-colors duration-200">
             <div className="w-8 h-8 rounded-full bg-blue-600 dark:bg-primary flex items-center justify-center text-white font-bold">
               {user?.username?.charAt(0).toUpperCase() || 'U'}
