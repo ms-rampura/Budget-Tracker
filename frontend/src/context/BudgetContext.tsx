@@ -67,7 +67,7 @@ interface BudgetContextType {
 const BudgetContext = createContext<BudgetContextType | null>(null);
 
 export function BudgetProvider({ children }: { children: ReactNode }) {
-  const { isAuthenticated, token } = useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext);
   
   const [balance,    setBalance]    = useState(0);
   const [records,    setRecords]    = useState<Record[]>([]);

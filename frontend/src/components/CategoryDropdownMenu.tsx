@@ -30,13 +30,13 @@ export default function CategoryDropdownMenu({ type, selected, onSelect }: Props
     <select
       value={selected === '' ? '' : selected}
       onChange={e => handleSelect(e.target.value)}
-      className="w-full border border-gray-300 dark:border-gray-600 rounded-xl p-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+      className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-none rounded-xl p-3 text-slate-700 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-primary appearance-none transition-colors duration-200"
     >
       <option value="" disabled>Select a category</option>
       {filteredCategories.map(cat => (
         <option key={cat.id} value={cat.id}>{cat.name}</option>
       ))}
-      <option value="NEW_CATEGORY" className="font-bold text-emerald-500">
+      <option value="NEW_CATEGORY" className="font-bold text-blue-600 dark:text-primary">
         + Create New Category
       </option>
     </select>

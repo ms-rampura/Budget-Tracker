@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Budget Planning - FinTrack Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error-container": "#ffdad6",
+                    "surface-bright": "#f9f9ff",
+                    "surface-container-highest": "#e1e2ec",
+                    "surface-dim": "#d8d9e3",
+                    "background": "#f9f9ff",
+                    "inverse-primary": "#adc6ff",
+                    "on-surface-variant": "#424754",
+                    "surface-container": "#ecedf7",
+                    "secondary-fixed": "#d3e4fe",
+                    "tertiary-fixed-dim": "#ffb786",
+                    "secondary-container": "#d0e1fb",
+                    "primary-fixed": "#d8e2ff",
+                    "on-secondary-container": "#54647a",
+                    "on-error": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed-dim": "#b7c8e1",
+                    "tertiary-container": "#b75b00",
+                    "secondary": "#505f76",
+                    "surface-variant": "#e1e2ec",
+                    "on-secondary-fixed": "#0b1c30",
+                    "surface-container-high": "#e6e7f2",
+                    "primary-container": "#2170e4",
+                    "on-tertiary-fixed-variant": "#723600",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "inverse-on-surface": "#eff0fa",
+                    "inverse-surface": "#2e3038",
+                    "tertiary-fixed": "#ffdcc6",
+                    "on-secondary-fixed-variant": "#38485d",
+                    "tertiary": "#924700",
+                    "on-background": "#191b23",
+                    "on-surface": "#191b23",
+                    "on-primary": "#ffffff",
+                    "primary": "#0058be",
+                    "primary-fixed-dim": "#adc6ff",
+                    "on-primary-fixed-variant": "#004395",
+                    "on-error-container": "#93000a",
+                    "on-primary-container": "#fefcff",
+                    "error": "#ba1a1a",
+                    "surface-container-low": "#f2f3fd",
+                    "surface": "#f9f9ff",
+                    "outline-variant": "#c2c6d6",
+                    "on-primary-fixed": "#001a42",
+                    "on-tertiary-fixed": "#311400",
+                    "outline": "#727785",
+                    "on-tertiary-container": "#fffbff",
+                    "surface-tint": "#005ac2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-gap": "1rem",
+                    "base-unit": "4px",
+                    "container-margin": "2rem",
+                    "gutter": "1.5rem",
+                    "card-padding": "1.5rem"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "h2": ["Manrope"],
+                    "h1": ["Manrope"],
+                    "h3": ["Manrope"],
+                    "label-sm": ["Inter"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "h2": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "h1": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "h3": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #f9f9ff;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- SideNavBar (Authority: JSON) -->
+<aside class="fixed left-0 top-0 h-full w-72 border-r border-slate-200 bg-slate-50 font-manrope font-medium text-[14px] flex flex-col p-6 space-y-8 z-50">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined" data-icon="account_balance">account_balance</span>
+</div>
+<div>
+<h1 class="text-2xl font-black text-blue-600 leading-none">FinTrack</h1>
+<p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Enterprise Edition</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 text-slate-600 px-4 py-2.5 hover:bg-slate-200/50 rounded-lg transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<!-- Active State: Budget Planning -->
+<a class="flex items-center gap-3 bg-blue-50 text-blue-600 rounded-lg px-4 py-2.5 transition-all translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span>Budget Planning</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 px-4 py-2.5 hover:bg-slate-200/50 rounded-lg transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span>Expenses</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 px-4 py-2.5 hover:bg-slate-200/50 rounded-lg transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance">account_balance</span>
+<span>Accounts</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 px-4 py-2.5 hover:bg-slate-200/50 rounded-lg transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span>Reports</span>
+</a>
+</nav>
+<div class="pt-6 border-t border-slate-200 space-y-1">
+<a class="flex items-center gap-3 text-slate-600 px-4 py-2.5 hover:bg-slate-200/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="contact_support">contact_support</span>
+<span>Support</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 px-4 py-2.5 hover:bg-slate-200/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</div>
+</aside>
+<!-- TopNavBar (Authority: JSON) -->
+<header class="fixed top-0 right-0 left-72 h-16 bg-white/80 backdrop-blur-md border-b border-slate-200 px-8 flex justify-between items-center z-40 shadow-sm font-manrope antialiased text-sm">
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" data-icon="search">search</span>
+<input class="pl-10 pr-4 py-2 bg-slate-100 border-none rounded-xl focus:ring-2 focus:ring-primary w-64 text-sm transition-all" placeholder="Search budget records..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full transition-colors relative active:scale-95">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+</div>
+<div class="h-8 w-[1px] bg-slate-200"></div>
+<div class="flex items-center gap-3">
+<div class="text-right">
+<p class="text-xs font-bold text-slate-900">Alex Sterling</p>
+<p class="text-[10px] text-slate-500 font-medium">Financial Analyst</p>
+</div>
+<img alt="User avatar" class="w-10 h-10 rounded-full border border-slate-200" data-alt="professional corporate headshot of a businessman in a suit with a clean background and soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSxIdzKmAgqEYquPNdY2D_gSfongZyasPgSWUDXEEscmJvGf-9fKxoeOusWxU1H24b5iQ2WqHJD0aoJLqK7fsSDJszTOm5GOlI7STi67aW7rhI0BmpXutzk2npeb-EkOhy6xiFJS_ZluU6dZyZLyRCttuPzTcsZI6I4RcOTtnIqKEzCZ3vxOGLGITVLHKojxEqAqou0ohXpmT18RWytYBy3RpGBAfSF9Zbyx3JURVNd0YOyAy1rvawALMk7T4NmILlMSj-_nfpM5w"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-72 pt-16 min-h-screen p-8">
+<div class="max-w-7xl mx-auto space-y-8">
+<!-- Page Header -->
+<div class="flex justify-between items-end">
+<div>
+<nav class="flex text-label-sm text-outline mb-2">
+<span class="hover:text-primary cursor-pointer">Finance</span>
+<span class="mx-2">/</span>
+<span class="text-on-surface-variant">Budget Planning</span>
+</nav>
+<h2 class="font-h1 text-h1 text-on-surface tracking-tight">Monthly Budget Planning</h2>
+<p class="text-body-md text-on-surface-variant mt-1">October 2023 — Strategic resource allocation and limit tracking.</p>
+</div>
+<button class="flex items-center gap-2 bg-primary text-on-primary px-6 py-3 rounded-xl font-h3 text-body-md shadow-md hover:bg-primary-container transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+                    Set New Budget
+                </button>
+</div>
+<!-- Dashboard Summary Cards (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="col-span-1 md:col-span-2 bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col justify-between overflow-hidden relative">
+<div class="relative z-10">
+<p class="text-label-sm text-outline font-bold uppercase tracking-wider">Total Monthly Limit</p>
+<h3 class="text-4xl font-h1 mt-2 text-on-surface">$12,450.00</h3>
+<div class="mt-4 flex items-center gap-2 text-green-600">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+<span class="text-label-sm font-bold">+5.2% from last month</span>
+</div>
+</div>
+<div class="absolute right-0 bottom-0 opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-9xl" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+</div>
+<div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+<div class="w-10 h-10 bg-error-container text-on-error-container rounded-lg flex items-center justify-center mb-4">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+</div>
+<p class="text-label-sm text-outline font-bold uppercase tracking-wider">Total Spent</p>
+<h3 class="text-2xl font-h2 mt-1 text-on-surface">$8,124.50</h3>
+<div class="w-full bg-slate-100 h-1.5 rounded-full mt-4">
+<div class="bg-error h-1.5 rounded-full" style="width: 65%"></div>
+</div>
+</div>
+<div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+<div class="w-10 h-10 bg-primary-container text-on-primary-container rounded-lg flex items-center justify-center mb-4">
+<span class="material-symbols-outlined" data-icon="savings">savings</span>
+</div>
+<p class="text-label-sm text-outline font-bold uppercase tracking-wider">Remaining</p>
+<h3 class="text-2xl font-h2 mt-1 text-on-surface">$4,325.50</h3>
+<div class="w-full bg-slate-100 h-1.5 rounded-full mt-4">
+<div class="bg-primary h-1.5 rounded-full" style="width: 35%"></div>
+</div>
+</div>
+</div>
+<!-- Budget Table Section -->
+<div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+<div class="px-8 py-6 border-b border-slate-100 flex justify-between items-center bg-surface-bright">
+<h3 class="font-h3 text-h3 text-on-surface">Category Breakdown</h3>
+<div class="flex gap-2">
+<button class="p-2 border border-slate-200 rounded-lg hover:bg-slate-50">
+<span class="material-symbols-outlined text-slate-600" data-icon="filter_list">filter_list</span>
+</button>
+<button class="p-2 border border-slate-200 rounded-lg hover:bg-slate-50">
+<span class="material-symbols-outlined text-slate-600" data-icon="download">download</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50/50">
+<th class="px-8 py-4 text-label-sm text-outline uppercase tracking-wider font-bold">Category</th>
+<th class="px-8 py-4 text-label-sm text-outline uppercase tracking-wider font-bold">Budgeted</th>
+<th class="px-8 py-4 text-label-sm text-outline uppercase tracking-wider font-bold">Spent</th>
+<th class="px-8 py-4 text-label-sm text-outline uppercase tracking-wider font-bold">Utilization</th>
+<th class="px-8 py-4 text-label-sm text-outline uppercase tracking-wider font-bold">Remaining</th>
+<th class="px-8 py-4"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<!-- Category: Housing -->
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Housing</p>
+<p class="text-xs text-outline">Mortgage, Utilities, Insurance</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-6 font-body-lg text-on-surface font-semibold">$3,500.00</td>
+<td class="px-8 py-6 font-body-lg text-on-surface-variant">$3,420.00</td>
+<td class="px-8 py-6">
+<div class="w-48">
+<div class="flex justify-between text-[10px] mb-1 font-bold text-outline">
+<span>98%</span>
+<span>Near Limit</span>
+</div>
+<div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-error h-2 rounded-full" style="width: 98%"></div>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<span class="px-3 py-1 rounded-full bg-error-container text-on-error-container text-label-sm font-bold">
+                                        $80.00
+                                    </span>
+</td>
+<td class="px-8 py-6 text-right">
+<button class="text-outline hover:text-primary">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Category: Food & Dining -->
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="restaurant">restaurant</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Food &amp; Dining</p>
+<p class="text-xs text-outline">Groceries, Restaurants</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-6 font-body-lg text-on-surface font-semibold">$1,200.00</td>
+<td class="px-8 py-6 font-body-lg text-on-surface-variant">$640.20</td>
+<td class="px-8 py-6">
+<div class="w-48">
+<div class="flex justify-between text-[10px] mb-1 font-bold text-outline">
+<span>53%</span>
+<span>On Track</span>
+</div>
+<div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-2 rounded-full" style="width: 53%"></div>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-label-sm font-bold">
+                                        $559.80
+                                    </span>
+</td>
+<td class="px-8 py-6 text-right">
+<button class="text-outline hover:text-primary">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Category: Entertainment -->
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="confirmation_number">confirmation_number</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Entertainment</p>
+<p class="text-xs text-outline">Movies, Events, Hobbies</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-6 font-body-lg text-on-surface font-semibold">$800.00</td>
+<td class="px-8 py-6 font-body-lg text-on-surface-variant">$215.00</td>
+<td class="px-8 py-6">
+<div class="w-48">
+<div class="flex justify-between text-[10px] mb-1 font-bold text-outline">
+<span>27%</span>
+<span>Low Use</span>
+</div>
+<div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-2 rounded-full" style="width: 27%"></div>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-label-sm font-bold">
+                                        $585.00
+                                    </span>
+</td>
+<td class="px-8 py-6 text-right">
+<button class="text-outline hover:text-primary">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Category: Transportation -->
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="directions_car">directions_car</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Transportation</p>
+<p class="text-xs text-outline">Fuel, Maintenance, Transit</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-6 font-body-lg text-on-surface font-semibold">$600.00</td>
+<td class="px-8 py-6 font-body-lg text-on-surface-variant">$590.00</td>
+<td class="px-8 py-6">
+<div class="w-48">
+<div class="flex justify-between text-[10px] mb-1 font-bold text-outline">
+<span>98%</span>
+<span>Warning</span>
+</div>
+<div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-error h-2 rounded-full" style="width: 98%"></div>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<span class="px-3 py-1 rounded-full bg-error-container text-on-error-container text-label-sm font-bold">
+                                        $10.00
+                                    </span>
+</td>
+<td class="px-8 py-6 text-right">
+<button class="text-outline hover:text-primary">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Insights Section (Bento Grid Bottom) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="md:col-span-2 bg-white border border-slate-200 rounded-xl p-8 shadow-sm">
+<h3 class="font-h3 text-h3 mb-6">Spending Trend Analysis</h3>
+<div class="h-64 flex items-end gap-4">
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-primary/20 rounded-t-lg relative group h-[40%]">
+<div class="absolute inset-0 bg-primary opacity-0 group-hover:opacity-100 transition-opacity rounded-t-lg"></div>
+</div>
+<span class="text-label-sm text-outline">Week 1</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-primary/20 rounded-t-lg relative group h-[65%]">
+<div class="absolute inset-0 bg-primary opacity-0 group-hover:opacity-100 transition-opacity rounded-t-lg"></div>
+</div>
+<span class="text-label-sm text-outline">Week 2</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-primary rounded-t-lg h-[85%]"></div>
+<span class="text-label-sm text-primary font-bold">Week 3</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-slate-100 rounded-t-lg h-[20%] border-dashed border border-slate-300"></div>
+<span class="text-label-sm text-outline">Week 4</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-xl p-8 border border-slate-200">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="lightbulb">lightbulb</span>
+<h3 class="font-h3 text-h3">Smart Tip</h3>
+</div>
+<p class="text-body-lg text-on-surface-variant leading-relaxed">
+                        Your <span class="font-bold text-on-surface">Entertainment</span> spending is 40% lower than usual this month. Consider reallocating $200 to your <span class="font-bold text-on-surface">Savings</span> to reach your year-end goal faster.
+                    </p>
+<button class="mt-8 w-full py-3 border-2 border-primary text-primary font-bold rounded-xl hover:bg-primary hover:text-on-primary transition-all">
+                        Apply Suggestion
+                    </button>
+</div>
+</div>
+</div>
+</main>
+</body></html>

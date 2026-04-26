@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Namaa Dashboard - Rusty07</title>
+<!-- Tailwind CSS CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts for Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style data-purpose="custom-fonts">
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+<style data-purpose="custom-styling">
+    .sidebar-item-active {
+      background-color: #ebf5ff;
+      color: #3b82f6;
+      border-radius: 0.5rem;
+    }
+    .chart-line {
+      stroke-dasharray: 0;
+      stroke: #3b82f6;
+      fill: none;
+    }
+    .donut-segment {
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+    }
+    /* Simple custom scrollbar for the table container */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #e2e8f0;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-700">
+<div class="flex min-h-screen">
+<!-- BEGIN: Sidebar -->
+<aside class="w-64 bg-white border-r border-slate-200 flex flex-col hidden lg:flex">
+<!-- Sidebar Logo -->
+<div class="p-6 flex items-center gap-2">
+<div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center">
+<span class="text-white font-bold text-xl">N</span>
+</div>
+<span class="text-xl font-bold text-slate-800">Namaa</span>
+</div>
+<!-- Search Bar -->
+<div class="px-6 mb-6">
+<div class="relative">
+<input class="w-full pl-10 pr-4 py-2 bg-slate-50 border-none rounded-lg text-sm focus:ring-2 focus:ring-blue-500" placeholder="Search" type="text"/>
+<span class="absolute left-3 top-2.5 text-slate-400">
+<svg class="h-4 w-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</span>
+<span class="absolute right-3 top-2.5 text-slate-300 text-[10px] font-bold">⌘ F</span>
+</div>
+</div>
+<!-- Navigation Menu -->
+<nav class="flex-1 px-4 space-y-8 overflow-y-auto custom-scrollbar">
+<!-- Menu Group -->
+<section>
+<p class="px-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Menu</p>
+<ul class="space-y-1">
+<li><a class="flex items-center gap-3 px-3 py-2 sidebar-item-active text-sm font-medium" href="#"><span>📊</span> Dashboard</a></li>
+<li><a class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:text-blue-600 text-sm font-medium" href="#"><span>📅</span> Budget Planning</a></li>
+<li><a class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:text-blue-600 text-sm font-medium" href="#"><span>💳</span> Expenses</a></li>
+<li><a class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:text-blue-600 text-sm font-medium" href="#"><span>🎯</span> Savings Goals <span class="ml-auto bg-slate-100 text-slate-500 text-[10px] px-1.5 py-0.5 rounded">13</span></a></li>
+<li><a class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:text-blue-600 text-sm font-medium" href="#"><span>📄</span> Reports <span class="ml-auto bg-slate-100 text-slate-500 text-[10px] px-1.5 py-0.5 rounded">8</span></a></li>
+</ul>
+</section>
+<!-- Account Group -->
+<section>
+<p class="px-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Account</p>
+<ul class="space-y-1">
+<li><a class="flex items-center justify-between px-3 py-2 text-slate-500 hover:text-blue-600 text-sm font-medium" href="#">
+<span class="flex items-center gap-3"><span>🏦</span> Accounts &amp; Card</span>
+<svg class="h-3 w-3" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 9l-7 7-7-7" stroke-width="2"></path></svg>
+</a></li>
+<li><a class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:text-blue-600 text-sm font-medium" href="#"><span>👥</span> Member</a></li>
+</ul>
+</section>
+<!-- Support Group -->
+<section>
+<p class="px-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Support</p>
+<ul class="space-y-1">
+<li><a class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:text-blue-600 text-sm font-medium" href="#"><span>⚙️</span> Settings</a></li>
+<li><a class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:text-blue-600 text-sm font-medium" href="#"><span>🔒</span> Security</a></li>
+<li><a class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:text-blue-600 text-sm font-medium" href="#"><span>💬</span> Help &amp; Center</a></li>
+</ul>
+</section>
+</nav>
+<!-- Sidebar Promo Card -->
+<div class="p-6">
+<div class="bg-blue-600 rounded-2xl p-4 text-center text-white relative overflow-hidden">
+<div class="absolute -top-4 -right-4 w-12 h-12 bg-white/20 rounded-full"></div>
+<div class="mb-4 flex justify-center">
+<div class="w-12 h-12 bg-white/10 backdrop-blur rounded-full flex items-center justify-center">
+<span class="text-2xl">🔑</span>
+</div>
+</div>
+<h4 class="font-bold text-sm mb-2">TrendyCoder</h4>
+<p class="text-[10px] text-blue-100 mb-4 px-2">Unlock premium components and advanced analytics.</p>
+<button class="bg-blue-700 hover:bg-blue-800 text-white text-[11px] font-bold py-2 px-6 rounded-lg w-full border border-blue-400">★ Get Pro</button>
+</div>
+</div>
+</aside>
+<!-- END: Sidebar -->
+<!-- BEGIN: Main Content Area -->
+<main class="flex-1 overflow-y-auto bg-slate-50 p-6 md:p-8">
+<!-- BEGIN: Top Header -->
+<header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+<div>
+<nav class="text-[10px] text-slate-400 mb-1">Namaa &gt; <span class="text-slate-600">Dashboard</span></nav>
+<h1 class="text-2xl font-bold text-slate-800">Welcome back, Rusty07</h1>
+</div>
+<div class="flex items-center gap-3">
+<button class="bg-white border border-slate-200 px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2">
+            📅 July
+            <svg class="h-3 w-3" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 9l-7 7-7-7" stroke-width="2"></path></svg>
+</button>
+<button class="bg-white border border-slate-200 px-3 py-1.5 rounded-lg text-xs font-medium">Share</button>
+<!-- User Profile -->
+<div class="flex items-center gap-3 pl-3 border-l border-slate-200">
+<div class="text-right">
+<p class="text-xs font-bold">Rusty07</p>
+<p class="text-[10px] text-slate-400">rusty07@gmail.com</p>
+</div>
+<img alt="Profile" class="w-10 h-10 rounded-full border border-slate-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDAJgqNi_3ETqV8ycl9zQxaaYZCxJFR7efzccJoAHf1kOkR2G_Eeyxuf5krRSnid3IQP-1EpKinWYAtWg8bxw9pYJ8Z_kPeoM5k-cyWtIP0s63m_CIYIMIoLoBd8Fv4-PdLDJ4vE6CBf6rDDx6eIDsDoZAnmVv6vqA0yzKDABJLUw0xzIQIGUU5NqNpMPfcnnQ6ENIdnx3mjltUs0kilS1gvL7cpDP661S7ToL9kmbgzowIAIXc5FqHbmq62mIsF0CAuAEVV7jrHU"/>
+<svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 9l-7 7-7-7" stroke-width="2"></path></svg>
+</div>
+</div>
+</header>
+<!-- END: Top Header -->
+<!-- BEGIN: Banner -->
+<div class="bg-white border border-blue-100 rounded-xl p-4 mb-8 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+<svg class="h-5 w-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<p class="text-sm font-medium text-slate-700">Unlock the full potential and elevate your experience today!</p>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-slate-900 text-white text-xs font-bold px-4 py-2 rounded-lg">Upgrade</button>
+<button class="text-slate-400 hover:text-slate-600">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 18L18 6M6 6l18 18" stroke-width="2"></path></svg>
+</button>
+</div>
+</div>
+<!-- END: Banner -->
+<!-- BEGIN: Stat Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+<!-- Total Income -->
+<div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 bg-emerald-50 text-emerald-500 rounded-lg flex items-center justify-center">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2"></path></svg>
+</div>
+<span class="text-xs font-bold text-slate-600">Total Income</span>
+</div>
+<button class="text-slate-400">•••</button>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<h3 class="text-2xl font-bold text-slate-800">$7.8k</h3>
+<p class="text-[10px] text-emerald-500 font-bold mt-1">↗ +1.78% <span class="text-slate-400 font-normal">vs last month</span></p>
+</div>
+<!-- Sparkline placeholder -->
+<div class="h-8 w-16 bg-emerald-50 rounded"></div>
+</div>
+</div>
+<!-- Total Expenses -->
+<div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 bg-sky-50 text-sky-500 rounded-lg flex items-center justify-center">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke-width="2"></path></svg>
+</div>
+<span class="text-xs font-bold text-slate-600">Total Expenses</span>
+</div>
+<button class="text-slate-400">•••</button>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<h3 class="text-2xl font-bold text-slate-800">$4.3k</h3>
+<p class="text-[10px] text-rose-500 font-bold mt-1">↘ -1.78% <span class="text-slate-400 font-normal">vs last month</span></p>
+</div>
+<div class="h-8 w-16 bg-sky-50 rounded"></div>
+</div>
+</div>
+<!-- Total Savings -->
+<div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 bg-orange-50 text-orange-500 rounded-lg flex items-center justify-center">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" stroke-width="2"></path></svg>
+</div>
+<span class="text-xs font-bold text-slate-600">Total Savings</span>
+</div>
+<button class="text-slate-400">•••</button>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<h3 class="text-2xl font-bold text-slate-800">$5.6k</h3>
+<p class="text-[10px] text-emerald-500 font-bold mt-1">↗ +1.24% <span class="text-slate-400 font-normal">vs last month</span></p>
+</div>
+<div class="h-8 w-16 bg-orange-50 rounded"></div>
+</div>
+</div>
+<!-- Total Investment -->
+<div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 bg-indigo-50 text-indigo-500 rounded-lg flex items-center justify-center">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" stroke-width="2"></path></svg>
+</div>
+<span class="text-xs font-bold text-slate-600">Total Investment</span>
+</div>
+<button class="text-slate-400">•••</button>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<h3 class="text-2xl font-bold text-slate-800">$3.75k</h3>
+<p class="text-[10px] text-emerald-500 font-bold mt-1">↗ +66.95% <span class="text-slate-400 font-normal">vs last month</span></p>
+</div>
+<div class="h-8 w-16 bg-indigo-50 rounded"></div>
+</div>
+</div>
+</div>
+<!-- END: Stat Cards Grid -->
+<!-- BEGIN: Charts Row -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+<!-- Monthly Trends Chart (2/3 width) -->
+<div class="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm relative overflow-hidden">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h3 class="text-sm font-bold text-slate-800">Monthly Trends</h3>
+<p class="text-[10px] text-slate-400">Income vs expenses over time</p>
+</div>
+<div class="flex bg-slate-50 p-1 rounded-lg">
+<button class="px-3 py-1 text-[10px] font-medium text-slate-400">Weekly</button>
+<button class="px-3 py-1 text-[10px] font-bold text-slate-800 bg-white shadow-sm rounded-md">Monthly</button>
+<button class="px-3 py-1 text-[10px] font-medium text-slate-400">Yearly</button>
+</div>
+<div class="flex items-center gap-2 bg-white border border-slate-200 px-2 py-1 rounded-md text-[10px]">
+<span>📅 2025</span>
+</div>
+</div>
+<!-- Chart Visualization Area -->
+<div class="h-48 relative">
+<!-- Y-Axis labels -->
+<div class="absolute left-0 top-0 bottom-0 flex flex-col justify-between text-[8px] text-slate-400">
+<span>$50k</span>
+<span>$40k</span>
+<span>$30k</span>
+<span>$20k</span>
+<span>$10k</span>
+<span>$0k</span>
+</div>
+<!-- Grid Lines -->
+<div class="ml-8 h-full flex flex-col justify-between pt-1 pb-1">
+<div class="border-b border-slate-100 w-full h-0"></div>
+<div class="border-b border-slate-100 w-full h-0"></div>
+<div class="border-b border-slate-100 w-full h-0"></div>
+<div class="border-b border-slate-100 w-full h-0"></div>
+<div class="border-b border-slate-100 w-full h-0"></div>
+<div class="border-b border-slate-100 w-full h-0"></div>
+</div>
+<!-- Path Drawing (Conceptual SVG for visualization) -->
+<svg class="absolute left-8 top-0 right-0 h-full w-[calc(100%-2rem)] overflow-visible">
+<!-- Avg Line -->
+<line stroke="#3b82f6" stroke-dasharray="2,2" stroke-width="1" x1="0" x2="100%" y1="50" y2="50"></line>
+<rect fill="#3b82f6" height="14" rx="2" width="24" x="0" y="42"></rect>
+<text fill="white" font-size="8" font-weight="bold" x="4" y="52">Avg</text>
+<!-- Main Trend Line -->
+<path d="M0,130 C40,140 80,120 120,135 C160,150 200,140 240,110 C280,80 320,50 360,40 C400,30 440,100 480,110 C520,120 560,110 600,125" fill="none" stroke="#3b82f6" stroke-width="2"></path>
+<!-- Selected Month Highlight -->
+<line class="opacity-80" stroke="#3b82f6" stroke-linecap="round" stroke-width="6" x1="360" x2="360" y1="0" y2="100%"></line>
+<!-- Tooltip on chart -->
+<foreignobject height="40" width="80" x="375" y="30">
+<div class="bg-white border border-slate-100 shadow-xl rounded-md p-2 text-center">
+<p class="text-[8px] text-slate-400">Jul, 2025</p>
+<p class="text-xs font-bold text-slate-800">Income <span class="ml-1">$29k</span></p>
+</div>
+</foreignobject>
+</svg>
+<!-- X-Axis Labels -->
+<div class="absolute -bottom-6 left-8 right-0 flex justify-between text-[9px] text-slate-400 font-medium">
+<span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+</div>
+</div>
+</div>
+<!-- Statistic / Donut Chart (1/3 width) -->
+<div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center">
+<div class="w-full flex justify-between items-center mb-6">
+<h3 class="text-sm font-bold text-slate-800">Statistic</h3>
+<div class="flex bg-slate-50 p-1 rounded-lg">
+<button class="px-3 py-1 text-[10px] font-bold text-white bg-blue-600 rounded-md">Expenses</button>
+<button class="px-3 py-1 text-[10px] font-medium text-slate-400">Income</button>
+</div>
+<button class="text-slate-400">•••</button>
+</div>
+<!-- Donut Chart -->
+<div class="relative w-40 h-40 flex items-center justify-center mb-8">
+<svg class="w-full h-full" viewbox="0 0 100 100">
+<!-- Background track -->
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#f1f5f9" stroke-width="8"></circle>
+<!-- Segments -->
+<circle class="donut-segment" cx="50" cy="50" fill="transparent" r="40" stroke="#3b82f6" stroke-dasharray="160 251" stroke-width="8"></circle>
+<circle class="donut-segment" cx="50" cy="50" fill="transparent" r="40" stroke="#bfdbfe" stroke-dasharray="40 251" stroke-dashoffset="-160" stroke-width="8"></circle>
+</svg>
+<div class="absolute text-center">
+<p class="text-[9px] text-slate-400 font-medium">Total Expense</p>
+<p class="text-lg font-bold text-slate-800">$4,050</p>
+</div>
+</div>
+<!-- Legend / Breakdown -->
+<div class="w-full space-y-3 relative">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-2.5 h-2.5 bg-blue-600 rounded-sm"></div>
+<span class="text-[10px] font-medium text-slate-600">Housing &amp; Utilities</span>
+</div>
+<span class="text-[10px] font-bold text-slate-800">$1,800</span>
+</div>
+<div class="flex items-center justify-between opacity-50">
+<div class="flex items-center gap-2">
+<div class="w-2.5 h-2.5 bg-blue-300 rounded-sm"></div>
+<span class="text-[10px] font-medium text-slate-600">Food &amp; Groceries</span>
+</div>
+<span class="text-[10px] font-bold text-slate-800">$900</span>
+</div>
+<!-- Floating "See more" button from image UI -->
+<div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-10">
+<button class="bg-blue-50/90 backdrop-blur-sm border border-blue-100 text-blue-600 text-[10px] font-bold px-6 py-2 rounded-lg shadow-sm">See more</button>
+</div>
+</div>
+</div>
+</div>
+<!-- END: Charts Row -->
+<!-- BEGIN: Recent Transactions Table -->
+<section class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+<div class="p-6 flex justify-between items-center border-b border-slate-50">
+<h3 class="text-sm font-bold text-slate-800">Recent Transactions</h3>
+<button class="bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2">
+            This Month
+            <svg class="h-3 w-3" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 9l-7 7-7-7" stroke-width="2"></path></svg>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-xs">
+<thead>
+<tr class="text-slate-400 bg-slate-50">
+<th class="px-6 py-3 font-medium uppercase tracking-wider">Name</th>
+<th class="px-6 py-3 font-medium uppercase tracking-wider">Category</th>
+<th class="px-6 py-3 font-medium uppercase tracking-wider">Date &amp; Time</th>
+<th class="px-6 py-3 font-medium uppercase tracking-wider">Amount</th>
+<th class="px-6 py-3 font-medium uppercase tracking-wider text-center">Status</th>
+<th class="px-6 py-3 font-medium uppercase tracking-wider">Note</th>
+<th class="px-6 py-3 font-medium uppercase tracking-wider text-center">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-50">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50/50">
+<td class="px-6 py-4 font-bold text-slate-700">Internet Bill</td>
+<td class="px-6 py-4 text-slate-600">Utilities</td>
+<td class="px-6 py-4">
+<p class="font-bold">2025-03-05</p>
+<p class="text-[10px] text-slate-400">10:15:23</p>
+</td>
+<td class="px-6 py-4 font-bold">$120.50</td>
+<td class="px-6 py-4 text-center">
+<span class="bg-emerald-50 text-emerald-600 text-[10px] font-bold px-3 py-1 rounded-md">Completed</span>
+</td>
+<td class="px-6 py-4 text-slate-400 text-[10px]">Monthly broadband subscription</td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 text-lg">⋮</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50/50">
+<td class="px-6 py-4 font-bold text-slate-700">Grocery Shopping</td>
+<td class="px-6 py-4 text-slate-600">Shopping</td>
+<td class="px-6 py-4">
+<p class="font-bold">2025-03-07</p>
+<p class="text-[10px] text-slate-400">15:47:11</p>
+</td>
+<td class="px-6 py-4 font-bold">$185.75</td>
+<td class="px-6 py-4 text-center">
+<span class="bg-rose-50 text-rose-500 text-[10px] font-bold px-3 py-1 rounded-md">Failed</span>
+</td>
+<td class="px-6 py-4 text-slate-400 text-[10px]">Weekly groceries at supermarket</td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 text-lg">⋮</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50/50">
+<td class="px-6 py-4 font-bold text-slate-700">Concert Tickets</td>
+<td class="px-6 py-4 text-slate-600">Entertainment</td>
+<td class="px-6 py-4">
+<p class="font-bold">2025-02-28</p>
+<p class="text-[10px] text-slate-400">20:05:42</p>
+</td>
+<td class="px-6 py-4 font-bold">$310.00</td>
+<td class="px-6 py-4 text-center">
+<span class="bg-orange-50 text-orange-500 text-[10px] font-bold px-3 py-1 rounded-md">Pending</span>
+</td>
+<td class="px-6 py-4 text-slate-400 text-[10px]">Tickets for live music concert</td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 text-lg">⋮</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-slate-50/50">
+<td class="px-6 py-4 font-bold text-slate-700">Pharmacy Purchase</td>
+<td class="px-6 py-4 text-slate-600">Healthcare</td>
+<td class="px-6 py-4">
+<p class="font-bold">2025-02-15</p>
+<p class="text-[10px] text-slate-400">19:36:09</p>
+</td>
+<td class="px-6 py-4 font-bold">$75.90</td>
+<td class="px-6 py-4 text-center">
+<span class="bg-emerald-50 text-emerald-600 text-[10px] font-bold px-3 py-1 rounded-md">Completed</span>
+</td>
+<td class="px-6 py-4 text-slate-400 text-[10px]">Medicines and health supplements</td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 text-lg">⋮</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- END: Recent Transactions Table -->
+</main>
+<!-- END: Main Content Area -->
+</div>
+</body></html>

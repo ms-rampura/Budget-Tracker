@@ -2,6 +2,7 @@ import { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
+import { MdAccountBalance } from 'react-icons/md';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -23,35 +24,40 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-            Sign in to your account
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-background py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
+      <div className="max-w-md w-full space-y-8 bg-white dark:bg-surface-container p-8 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800 transition-colors duration-200">
+        <div className="flex flex-col items-center">
+          <div className="w-12 h-12 rounded-xl bg-blue-600 dark:bg-primary-container flex items-center justify-center mb-4">
+            <MdAccountBalance className="text-white text-2xl" />
+          </div>
+          <h2 className="text-center text-3xl font-extrabold text-slate-800 dark:text-white">
+            Welcome Back
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-            Or <Link to="/register" className="font-medium text-emerald-600 hover:text-emerald-500">register a new account</Link>
+          <p className="mt-2 text-center text-sm text-slate-500 dark:text-slate-400">
+            Don't have an account? <Link to="/register" className="font-medium text-blue-600 dark:text-primary hover:text-blue-700 dark:hover:text-blue-400">Sign up</Link>
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {error && <div className="text-red-500 text-sm text-center bg-red-100 dark:bg-red-900/30 p-3 rounded">{error}</div>}
-          <div className="rounded-md shadow-sm -space-y-px">
+          {error && <div className="text-rose-600 dark:text-error text-sm text-center bg-rose-50 dark:bg-error-container/30 border border-rose-200 dark:border-error/50 p-3 rounded-lg">{error}</div>}
+          <div className="space-y-4">
             <div>
+              <label className="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">Email Address</label>
               <input
                 type="email"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:bg-gray-700 dark:text-white rounded-t-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
+                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-none rounded-xl p-3 text-slate-700 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-primary transition-colors duration-200"
+                placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>
+              <label className="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">Password</label>
               <input
                 type="password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:bg-gray-700 dark:text-white rounded-b-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
+                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-none rounded-xl p-3 text-slate-700 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-primary transition-colors duration-200"
+                placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -61,9 +67,9 @@ export default function Login() {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
+              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 dark:bg-primary dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-primary focus:ring-offset-white dark:focus:ring-offset-slate-900 transition-colors"
             >
-              Sign in
+              Sign In
             </button>
           </div>
         </form>

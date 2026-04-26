@@ -11,7 +11,7 @@ import AuditLogs  from './pages/AuditLogs';
 import Login      from './pages/Login';
 import Register   from './pages/Register';
 
-function ProtectedRoute({ children }: { children: JSX.Element }) {
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, loading } = useContext(AuthContext);
   const location = useLocation();
 
@@ -26,33 +26,133 @@ function ProtectedRoute({ children }: { children: JSX.Element }) {
   return children;
 }
 
+import { MdDashboard, MdAccountBalanceWallet, MdReceiptLong, MdAccountBalance, MdAnalytics, MdSettings, MdSearch, MdNotifications, MdHelp } from 'react-icons/md';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
+
+const mockPieData = [
+  { name: 'Needs', value: 50, color: '#3b82f6' },
+  { name: 'Wants', value: 30, color: '#10b981' },
+  { name: 'Savings', value: 20, color: '#f59e0b' },
+];
+
 function MainLayout({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, logout, user } = useContext(AuthContext);
 
   if (!isAuthenticated) return <>{children}</>;
 
   return (
-    <>
-      <nav className="fixed top-0 w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center px-4 py-3 z-10">
-        <div className="font-bold text-lg dark:text-white">BudgetTracker</div>
-        <div className="flex gap-4 items-center">
-          <span className="text-sm dark:text-gray-300">Hi, {user?.username}</span>
-          <button onClick={logout} className="text-sm text-red-500 hover:text-red-600 font-semibold">Logout</button>
-        </div>
-      </nav>
+    <div className="min-h-screen bg-slate-50 dark:bg-background font-body-md text-slate-700 dark:text-on-surface transition-colors duration-200">
+      {/* SideNavBar Shell */}
+      <aside className="fixed left-0 top-0 h-full w-72 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 z-50 overflow-y-auto transition-colors duration-200">
+        <div className="flex flex-col h-full p-6 space-y-8">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-blue-600 dark:bg-primary-container flex items-center justify-center">
+              <MdAccountBalance className="text-white text-xl" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-black text-slate-800 dark:text-primary">FinTrack</h1>
+              <p className="text-[10px] uppercase tracking-widest text-slate-500 dark:text-secondary">Enterprise Edition</p>
+            </div>
+          </div>
+          
+          <nav className="flex-1 space-y-2">
+            <NavLink to="/" className={({ isActive }) => `flex items-center gap-3 px-4 py-2.5 font-manrope font-medium text-[14px] rounded-lg transition-all duration-200 ${isActive ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-primary hover:translate-x-1' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 hover:text-blue-600 hover:translate-x-1'}`}>
+              <MdDashboard className="text-xl" />
+              <span>Dashboard</span>
+            </NavLink>
+            <NavLink to="/add" className={({ isActive }) => `flex items-center gap-3 px-4 py-2.5 font-manrope font-medium text-[14px] rounded-lg transition-all duration-200 ${isActive ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-primary hover:translate-x-1' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 hover:text-blue-600 hover:translate-x-1'}`}>
+              <MdAccountBalanceWallet className="text-xl" />
+              <span>Add Transaction</span>
+            </NavLink>
+            <NavLink to="/allrecords" className={({ isActive }) => `flex items-center gap-3 px-4 py-2.5 font-manrope font-medium text-[14px] rounded-lg transition-all duration-200 ${isActive ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-primary hover:translate-x-1' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 hover:text-blue-600 hover:translate-x-1'}`}>
+              <MdReceiptLong className="text-xl" />
+              <span>Records</span>
+            </NavLink>
+            <NavLink to="/audit" className={({ isActive }) => `flex items-center gap-3 px-4 py-2.5 font-manrope font-medium text-[14px] rounded-lg transition-all duration-200 ${isActive ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-primary hover:translate-x-1' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 hover:text-blue-600 hover:translate-x-1'}`}>
+              <MdAnalytics className="text-xl" />
+              <span>Audit Logs</span>
+            </NavLink>
+            <NavLink to="/about" className={({ isActive }) => `flex items-center gap-3 px-4 py-2.5 font-manrope font-medium text-[14px] rounded-lg transition-all duration-200 ${isActive ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-primary hover:translate-x-1' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 hover:text-blue-600 hover:translate-x-1'}`}>
+              <MdHelp className="text-xl" />
+              <span>About</span>
+            </NavLink>
+          </nav>
 
-      <main className="pt-16 pb-16 min-h-screen bg-gray-50 dark:bg-gray-900">
+          {/* Pie Chart Section in Sidebar */}
+          <div className="pt-6 border-t border-slate-200 dark:border-slate-800 transition-colors duration-200">
+            <h3 className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">Budget Overview</h3>
+            <div className="h-40">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={mockPieData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={30}
+                    outerRadius={50}
+                    paddingAngle={5}
+                    dataKey="value"
+                    stroke="none"
+                  >
+                    {mockPieData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: 'var(--tw-colors-slate-800, #1e293b)', border: 'none', borderRadius: '0.5rem', color: '#f1f5f9' }}
+                    itemStyle={{ color: '#f1f5f9' }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400 mt-2 px-2">
+              <div className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-500"></span>Needs</div>
+              <div className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-500"></span>Wants</div>
+              <div className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-500"></span>Savings</div>
+            </div>
+          </div>
+
+          <div className="pt-6 border-t border-slate-200 dark:border-slate-800 space-y-2 transition-colors duration-200">
+            <button onClick={logout} className="w-full flex items-center gap-3 text-rose-500 dark:text-red-400 px-4 py-2.5 font-manrope font-medium text-[14px] hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-lg transition-all">
+              <MdSettings className="text-xl" />
+              <span>Logout</span>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      {/* TopNavBar Shell */}
+      <header className="fixed top-0 right-0 left-72 h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 flex justify-between items-center px-8 z-40 shadow-sm transition-colors duration-200">
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <MdSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-lg" />
+            <input className="bg-slate-100 dark:bg-slate-800 border-none rounded-xl pl-10 pr-4 py-2 text-sm text-slate-700 dark:text-on-surface focus:ring-2 focus:ring-blue-500 dark:focus:ring-primary w-64 transition-colors duration-200" placeholder="Search financials..." type="text"/>
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-6">
+          <button className="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors relative">
+            <MdNotifications className="text-xl" />
+            <span className="absolute top-0 right-0 w-2 h-2 bg-blue-600 dark:bg-primary rounded-full border-2 border-white dark:border-slate-900"></span>
+          </button>
+          
+          <div className="flex items-center gap-3 pl-6 border-l border-slate-200 dark:border-slate-800 transition-colors duration-200">
+            <div className="w-8 h-8 rounded-full bg-blue-600 dark:bg-primary flex items-center justify-center text-white font-bold">
+              {user?.username?.charAt(0).toUpperCase() || 'U'}
+            </div>
+            <div className="hidden lg:block text-right">
+              <p className="text-sm font-semibold text-slate-800 dark:text-white">{user?.username}</p>
+              <p className="text-[10px] text-slate-500 uppercase font-bold">Premium Plan</p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content Canvas */}
+      <main className="ml-72 pt-24 px-8 pb-12 min-h-screen">
         {children}
       </main>
-
-      <nav className="fixed bottom-0 w-full bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 flex justify-around py-3 z-10">
-        <NavLink to="/"           className={({ isActive }) => isActive ? 'text-indigo-500 font-semibold' : 'text-gray-500'}>Home</NavLink>
-        <NavLink to="/add"        className={({ isActive }) => isActive ? 'text-indigo-500 font-semibold' : 'text-gray-500'}>Add</NavLink>
-        <NavLink to="/allrecords" className={({ isActive }) => isActive ? 'text-indigo-500 font-semibold' : 'text-gray-500'}>Records</NavLink>
-        <NavLink to="/audit"      className={({ isActive }) => isActive ? 'text-indigo-500 font-semibold' : 'text-gray-500'}>Audit</NavLink>
-        <NavLink to="/about"      className={({ isActive }) => isActive ? 'text-indigo-500 font-semibold' : 'text-gray-500'}>About</NavLink>
-      </nav>
-    </>
+    </div>
   );
 }
 
@@ -66,7 +166,6 @@ export default function App() {
               <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                
                 <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
                 <Route path="/add" element={<ProtectedRoute><Add /></ProtectedRoute>} />
                 <Route path="/allrecords" element={<ProtectedRoute><AllRecords /></ProtectedRoute>} />
