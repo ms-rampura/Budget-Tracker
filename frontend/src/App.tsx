@@ -75,7 +75,6 @@ function MainLayout({ children }: { children: React.ReactNode }) {
           </nav>
 
 
-
           <div className="pt-6 border-t border-slate-200 dark:border-slate-800 space-y-2 transition-colors duration-200">
             <button onClick={logout} className="w-full flex items-center gap-3 text-rose-500 dark:text-red-400 px-4 py-2.5 font-manrope font-medium text-[14px] hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-lg transition-all">
               <MdSettings className="text-xl" />
