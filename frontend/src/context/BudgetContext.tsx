@@ -70,9 +70,6 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
       // Needs absolute URL if no proxy setup, using http://localhost:3001 as fallback
       const { data } = await axios.get(`http://localhost:3001${API}/accounts`);
       setAccounts(data);
-      if (data.length > 0 && activeAccountId === null) {
-        setActiveAccountId(data[0].id);
-      }
     } catch (err) {
       console.error('Failed to fetch accounts', err);
     }
