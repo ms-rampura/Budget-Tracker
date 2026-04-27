@@ -46,8 +46,7 @@ function MainLayout({ children }: { children: React.ReactNode }) {
               <MdAccountBalance className="text-white text-xl" />
             </div>
             <div>
-              <h1 className="text-2xl font-black text-slate-800 dark:text-primary">FinTrack</h1>
-              <p className="text-[10px] uppercase tracking-widest text-slate-500 dark:text-secondary">Enterprise Edition</p>
+              <h1 className="text-2xl font-black text-slate-800 dark:text-primary">Budget Tracker</h1>
             </div>
           </div>
 
