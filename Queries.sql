@@ -20,24 +20,22 @@ CREATE TABLE accounts (
 );
 
 -- 3. Recreate the Records (Transactions) Table
--- We need to add user_id and account_id to link each transaction to a specific user and wallet.
--- WARNING: This drops the existing records table. If you want to keep old data, 
--- you will need to use ALTER TABLE instead.
+-- We have removed user_id, type, and category as they are redundant.
+-- user_id is linked via accounts, and type/category are linked via categories.
 DROP TABLE IF EXISTS records;
 
 CREATE TABLE records (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
     account_id INT NOT NULL,
+    category_id INT NOT NULL,
     amount DECIMAL(15, 2) NOT NULL,
-    type ENUM('income', 'expense') NOT NULL,
-    category VARCHAR(50) NOT NULL,
     time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     bal DECIMAL(15, 2) NOT NULL, -- Keeps track of the running balance for that specific account
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
+    FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
 );
--- 1. Create the new categories table
+
+-- 4. Create the new categories table
 CREATE TABLE categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -46,18 +44,14 @@ CREATE TABLE categories (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- 2. Add category_id to records
-ALTER TABLE records ADD COLUMN category_id INT;
-ALTER TABLE records ADD CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL;
--- 1. Index for the main dashboard query (Filters by User ID and Time)
-CREATE INDEX idx_records_user_time ON records (user_id, time DESC);
+-- 5. Indexes for optimization
+-- Index for fetching records for an account ordered by time
+CREATE INDEX idx_records_account_time ON records (account_id, time DESC);
 
--- 2. Index for filtering records by a specific wallet/account
-CREATE INDEX idx_records_user_account_time ON records (user_id, account_id, time DESC);
-
--- 3. Index for quickly fetching user accounts
+-- Index for quickly fetching user accounts
 CREATE INDEX idx_accounts_user ON accounts (user_id);
--- 1. Create the Audit Logs Table
+
+-- 6. Create the Audit Logs Table
 CREATE TABLE audit_logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -71,24 +65,44 @@ CREATE TABLE audit_logs (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- 2. Create AFTER UPDATE Trigger
+-- 7. Create AFTER UPDATE Trigger
 DELIMITER $$
 CREATE TRIGGER after_record_update
 AFTER UPDATE ON records
 FOR EACH ROW
 BEGIN
+    DECLARE v_user_id INT;
+    DECLARE v_old_type VARCHAR(20);
+    DECLARE v_new_type VARCHAR(20);
+    
+    -- Fetch user_id from accounts table
+    SELECT user_id INTO v_user_id FROM accounts WHERE id = NEW.account_id;
+    
+    -- Fetch types from categories table
+    SELECT type INTO v_old_type FROM categories WHERE id = OLD.category_id;
+    SELECT type INTO v_new_type FROM categories WHERE id = NEW.category_id;
+
     INSERT INTO audit_logs (user_id, record_id, action, old_amount, new_amount, old_type, new_type)
-    VALUES (OLD.user_id, OLD.id, 'UPDATE', OLD.amount, NEW.amount, OLD.type, NEW.type);
+    VALUES (v_user_id, OLD.id, 'UPDATE', OLD.amount, NEW.amount, v_old_type, v_new_type);
 END $$
 DELIMITER ;
 
--- 3. Create AFTER DELETE Trigger
+-- 8. Create AFTER DELETE Trigger
 DELIMITER $$
 CREATE TRIGGER after_record_delete
 AFTER DELETE ON records
 FOR EACH ROW
 BEGIN
+    DECLARE v_user_id INT;
+    DECLARE v_type VARCHAR(20);
+    
+    -- Fetch user_id from accounts table
+    SELECT user_id INTO v_user_id FROM accounts WHERE id = OLD.account_id;
+    
+    -- Fetch type from categories table
+    SELECT type INTO v_type FROM categories WHERE id = OLD.category_id;
+
     INSERT INTO audit_logs (user_id, record_id, action, old_amount, new_amount, old_type, new_type)
-    VALUES (OLD.user_id, OLD.id, 'DELETE', OLD.amount, NULL, OLD.type, NULL);
+    VALUES (v_user_id, OLD.id, 'DELETE', OLD.amount, NULL, v_type, NULL);
 END $$
 DELIMITER ;
