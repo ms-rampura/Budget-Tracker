@@ -83,25 +83,6 @@ export default function Register() {
                   <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Your data is encrypted with the highest industry standards.</p>
                 </div>
               </div>
-
-              <div className="flex items-start gap-4 p-4 rounded-xl bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200 dark:border-slate-700">
-                <div className="p-2 bg-emerald-100 dark:bg-emerald-500/20 rounded-lg">
-                  <MdInsights className="text-emerald-600 dark:text-emerald-400 text-xl" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-slate-900 dark:text-white text-base">Smart Insights</h3>
-                  <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">AI-driven analytics to help you save more every month.</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative h-64 rounded-2xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800">
-              <img className="absolute inset-0 w-full h-full object-cover" alt="Dashboard preview" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1000" />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
-              <div className="absolute bottom-6 left-6 right-6 text-white">
-                <p className="text-lg italic font-medium">"The most intuitive financial tool I've used in a decade."</p>
-                <p className="text-sm mt-2 opacity-80">— Alex D., Financial Advisor</p>
-              </div>
             </div>
           </div>
 
