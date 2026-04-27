@@ -11,7 +11,7 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
-  
+
   const { login } = useContext(AuthContext);
   const { isDark, toggleTheme } = useTheme();
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ export default function Register() {
         <div className="flex justify-between items-center px-6 py-4 w-full max-w-7xl mx-auto">
           <div className="flex items-center gap-2">
             <MdAccountBalanceWallet className="text-blue-600 dark:text-primary text-2xl" />
-            <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">FinTrack</span>
+            <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">SaveSmart</span>
           </div>
           <nav className="flex items-center gap-6">
             <button
@@ -61,18 +61,18 @@ export default function Register() {
         </div>
 
         <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
-          
+
           {/* Left Column (Marketing/Info) */}
           <div className="hidden lg:flex flex-col space-y-8 pr-12">
             <div className="space-y-4">
               <h1 className="text-5xl font-bold leading-tight text-slate-900 dark:text-white">
-                Master your money with <span className="text-blue-600 dark:text-primary">FinTrack</span>.
+                Master your money with <span className="text-blue-600 dark:text-primary">SaveSmart</span>.
               </h1>
               <p className="text-lg text-slate-600 dark:text-slate-400 max-w-md">
                 Professional-grade budgeting tools designed for clarity, trust, and your financial freedom.
               </p>
             </div>
-            
+
             <div className="grid grid-cols-1 gap-6">
               <div className="flex items-start gap-4 p-4 rounded-xl bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200 dark:border-slate-700">
                 <div className="p-2 bg-blue-100 dark:bg-primary/20 rounded-lg">
@@ -83,7 +83,7 @@ export default function Register() {
                   <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Your data is encrypted with the highest industry standards.</p>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-4 p-4 rounded-xl bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200 dark:border-slate-700">
                 <div className="p-2 bg-emerald-100 dark:bg-emerald-500/20 rounded-lg">
                   <MdInsights className="text-emerald-600 dark:text-emerald-400 text-xl" />
@@ -94,7 +94,7 @@ export default function Register() {
                 </div>
               </div>
             </div>
-            
+
             <div className="relative h-64 rounded-2xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800">
               <img className="absolute inset-0 w-full h-full object-cover" alt="Dashboard preview" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1000" />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
@@ -108,7 +108,7 @@ export default function Register() {
           {/* Right Column (Auth Form) */}
           <div className="w-full max-w-md mx-auto">
             <div className="bg-white dark:bg-surface-container rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors duration-200">
-              
+
               {/* Form Header Tabs */}
               <div className="flex border-b border-slate-200 dark:border-slate-800">
                 <Link to="/login" className="flex-1 py-4 text-center text-sm font-semibold text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all">
@@ -118,13 +118,13 @@ export default function Register() {
                   Register
                 </Link>
               </div>
-              
+
               <div className="p-8 space-y-6">
                 <div className="space-y-2 text-center">
                   <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Create Account</h2>
                   <p className="text-sm text-slate-500 dark:text-slate-400">Please enter your details to get started.</p>
                 </div>
-                
+
                 <form className="space-y-5" onSubmit={handleSubmit}>
                   {error && (
                     <div className="p-3 text-sm text-center text-rose-600 dark:text-red-400 bg-rose-50 dark:bg-error-container/20 border border-rose-200 dark:border-error/30 rounded-lg">
@@ -136,13 +136,13 @@ export default function Register() {
                     <label className="text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-400 uppercase">Username</label>
                     <div className="relative">
                       <MdPerson className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg" />
-                      <input 
+                      <input
                         type="text"
                         required
                         value={username}
                         onChange={e => setUsername(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-primary/40 focus:border-blue-500 dark:focus:border-primary text-slate-900 dark:text-white transition-all" 
-                        placeholder="johndoe" 
+                        className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-primary/40 focus:border-blue-500 dark:focus:border-primary text-slate-900 dark:text-white transition-all"
+                        placeholder="johndoe"
                       />
                     </div>
                   </div>
@@ -151,13 +151,13 @@ export default function Register() {
                     <label className="text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-400 uppercase">Email Address</label>
                     <div className="relative">
                       <MdMail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg" />
-                      <input 
+                      <input
                         type="email"
                         required
                         value={email}
                         onChange={e => setEmail(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-primary/40 focus:border-blue-500 dark:focus:border-primary text-slate-900 dark:text-white transition-all" 
-                        placeholder="name@company.com" 
+                        className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-primary/40 focus:border-blue-500 dark:focus:border-primary text-slate-900 dark:text-white transition-all"
+                        placeholder="name@company.com"
                       />
                     </div>
                   </div>
@@ -168,16 +168,16 @@ export default function Register() {
                     </div>
                     <div className="relative">
                       <MdLock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg" />
-                      <input 
+                      <input
                         type={showPassword ? "text" : "password"}
                         required
                         value={password}
                         onChange={e => setPassword(e.target.value)}
-                        className="w-full pl-10 pr-12 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-primary/40 focus:border-blue-500 dark:focus:border-primary text-slate-900 dark:text-white transition-all" 
-                        placeholder="••••••••" 
+                        className="w-full pl-10 pr-12 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-primary/40 focus:border-blue-500 dark:focus:border-primary text-slate-900 dark:text-white transition-all"
+                        placeholder="••••••••"
                       />
-                      <button 
-                        type="button" 
+                      <button
+                        type="button"
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors"
                       >
@@ -186,7 +186,7 @@ export default function Register() {
                     </div>
                   </div>
 
-                  <button 
+                  <button
                     type="submit"
                     className="w-full py-4 bg-blue-600 hover:bg-blue-700 dark:bg-primary dark:hover:bg-blue-600 text-white font-bold text-base rounded-xl active:scale-[0.98] transition-all shadow-lg shadow-blue-500/20 mt-4"
                   >

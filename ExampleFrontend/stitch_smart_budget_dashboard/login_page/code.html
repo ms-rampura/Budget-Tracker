@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 
-<html class="h-full" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
+<html class="h-full" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
@@ -76,157 +84,211 @@
                         "body-md": ["inter"]
                     },
                     "fontSize": {
-                        "h2": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
-                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
-                        "h3": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
-                        "h1": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
-                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                        "h2": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "h3": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "h1": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
                     }
                 },
             },
         }
     </script>
-<style>
+    <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
+
         .auth-card-shadow {
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
         }
+
         .bg-mesh {
             background-color: #f9f9ff;
-            background-image: 
+            background-image:
                 radial-gradient(at 0% 0%, rgba(0, 88, 190, 0.05) 0px, transparent 50%),
                 radial-gradient(at 100% 100%, rgba(0, 88, 190, 0.08) 0px, transparent 50%);
         }
     </style>
 </head>
+
 <body class="bg-background font-body-md text-on-background h-full flex flex-col">
-<header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm fixed top-0 w-full z-50">
-<div class="flex justify-between items-center px-6 py-4 w-full max-w-7xl mx-auto">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-primary text-2xl" data-icon="account_balance_wallet">account_balance_wallet</span>
-<span class="text-xl font-bold tracking-tight text-slate-900 dark:text-white font-h1">FinBalance</span>
-</div>
-<nav class="hidden md:flex gap-8 items-center">
-<a class="text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 py-1 font-body-md" href="#">Login</a>
-<a class="text-slate-600 dark:text-slate-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors font-body-md" href="#">Support</a>
-</nav>
-</div>
-</header>
-<main class="flex-grow flex items-center justify-center pt-24 pb-12 px-4 bg-mesh relative overflow-hidden">
-<div class="absolute inset-0 opacity-10 pointer-events-none">
-<div class="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] rounded-full bg-primary-container blur-[120px]"></div>
-<div class="absolute bottom-[-10%] right-[-5%] w-[40%] h-[40%] rounded-full bg-secondary-container blur-[120px]"></div>
-</div>
-<div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
-<div class="hidden lg:flex flex-col space-y-8 pr-12">
-<div class="space-y-4">
-<h1 class="font-h1 text-[48px] leading-tight text-on-surface">Master your money with <span class="text-primary">FinTrack</span>.</h1>
-<p class="font-body-lg text-on-surface-variant max-w-md">Professional-grade budgeting tools designed for clarity, trust, and your financial freedom.</p>
-</div>
-<div class="grid grid-cols-1 gap-6">
-<div class="flex items-start gap-4 p-4 rounded-xl bg-surface-container-low border border-outline-variant/30">
-<div class="p-2 bg-primary-container rounded-lg">
-<span class="material-symbols-outlined text-white" data-icon="security">security</span>
-</div>
-<div>
-<h3 class="font-h3 text-on-surface text-base">Bank-Level Security</h3>
-<p class="font-body-md text-on-surface-variant text-sm">Your data is encrypted with the highest industry standards.</p>
-</div>
-</div>
-<div class="flex items-start gap-4 p-4 rounded-xl bg-surface-container-low border border-outline-variant/30">
-<div class="p-2 bg-secondary-container rounded-lg">
-<span class="material-symbols-outlined text-on-secondary-container" data-icon="insights">insights</span>
-</div>
-<div>
-<h3 class="font-h3 text-on-surface text-base">Smart Insights</h3>
-<p class="font-body-md text-on-surface-variant text-sm">AI-driven analytics to help you save more every month.</p>
-</div>
-</div>
-</div>
-<div class="relative h-64 rounded-2xl overflow-hidden shadow-2xl">
-<img class="absolute inset-0 w-full h-full object-cover" data-alt="Professional workspace with laptop showing financial charts, clean minimalist desk, warm afternoon sunlight casting soft shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBi75E5758zITMcn6mHS8HzR3oLm9aRJkNM4sJFx0XGP3BAGVS-vbeEHXx_jK9LV_8ZD2fnI2eIAJ45vxHX-a8QylpVOIZSYE2F98NxROdXvbNHWOYInyLVahX7dJIBDVHjPVqA_wkvbHeEsOY8PYrARv9tQsKbv-MqUzC-3aJJPdMFGWu3Jo4hsP8-jByjHdyW8-y-S1BDklfgcNtQhZr9TkkvZHklgS2IqH2NQlB47R5cj-Ux2T1TPSITcdpOYYdz9EkPDqc9hbM"/>
-<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-<div class="absolute bottom-6 left-6 right-6 text-white">
-<p class="font-h3 text-lg italic">"The most intuitive financial tool I've used in a decade of accounting."</p>
-<p class="font-body-md text-sm mt-2 opacity-80">— Chief Financial Officer, TechCorp</p>
-</div>
-</div>
-</div>
-<div class="w-full max-w-md mx-auto">
-<div class="bg-white rounded-2xl auth-card-shadow border border-outline-variant/50 overflow-hidden">
-<div class="flex border-b border-outline-variant/30">
-<button class="flex-1 py-4 text-sm font-semibold text-primary border-b-2 border-primary bg-surface-container-lowest transition-all">Sign In</button>
-<button class="flex-1 py-4 text-sm font-semibold text-on-surface-variant hover:bg-surface-container-low transition-all">Register</button>
-</div>
-<div class="p-8 space-y-6">
-<div class="space-y-2 text-center">
-<h2 class="font-h2 text-on-surface">Welcome Back</h2>
-<p class="font-body-md text-on-surface-variant">Please enter your details to access your account.</p>
-</div>
-<form class="space-y-5">
-<div class="space-y-2">
-<label class="font-label-sm text-on-surface-variant" for="email">Email Address</label>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg" data-icon="mail">mail</span>
-<input class="w-full pl-10 pr-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-body-md" id="email" placeholder="name@company.com" type="email"/>
-</div>
-</div>
-<div class="space-y-2">
-<div class="flex justify-between items-center">
-<label class="font-label-sm text-on-surface-variant" for="password">Password</label>
-<a class="font-label-sm text-primary hover:underline transition-all" href="#">Forgot Password?</a>
-</div>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg" data-icon="lock">lock</span>
-<input class="w-full pl-10 pr-12 py-3 bg-surface-container-low border border-outline-variant rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-body-md" id="password" placeholder="••••••••" type="password"/>
-<button class="absolute right-3 top-1/2 -translate-y-1/2 text-outline hover:text-on-surface transition-colors" type="button">
-<span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span>
-</button>
-</div>
-</div>
-<div class="flex items-center gap-3">
-<input class="w-4 h-4 text-primary border-outline-variant rounded focus:ring-primary" id="remember" type="checkbox"/>
-<label class="font-body-md text-sm text-on-surface-variant" for="remember">Keep me logged in for 30 days</label>
-</div>
-<button class="w-full py-4 bg-primary text-white font-h3 text-base rounded-xl hover:bg-primary-container active:scale-[0.98] transition-all shadow-lg shadow-primary/20" type="submit">
+    <header
+        class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm fixed top-0 w-full z-50">
+        <div class="flex justify-between items-center px-6 py-4 w-full max-w-7xl mx-auto">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-2xl"
+                    data-icon="account_balance_wallet">account_balance_wallet</span>
+                <span class="text-xl font-bold tracking-tight text-slate-900 dark:text-white font-h1">FinBalance</span>
+            </div>
+            <nav class="hidden md:flex gap-8 items-center">
+                <a class="text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 py-1 font-body-md"
+                    href="#">Login</a>
+                <a class="text-slate-600 dark:text-slate-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors font-body-md"
+                    href="#">Support</a>
+            </nav>
+        </div>
+    </header>
+    <main class="flex-grow flex items-center justify-center pt-24 pb-12 px-4 bg-mesh relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 pointer-events-none">
+            <div class="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] rounded-full bg-primary-container blur-[120px]">
+            </div>
+            <div
+                class="absolute bottom-[-10%] right-[-5%] w-[40%] h-[40%] rounded-full bg-secondary-container blur-[120px]">
+            </div>
+        </div>
+        <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+            <div class="hidden lg:flex flex-col space-y-8 pr-12">
+                <div class="space-y-4">
+                    <h1 class="font-h1 text-[48px] leading-tight text-on-surface">Master your money with <span
+                            class="text-primary">SaveSmart</span>.</h1>
+                    <p class="font-body-lg text-on-surface-variant max-w-md">Professional-grade budgeting tools designed
+                        for clarity, trust, and your financial freedom.</p>
+                </div>
+                <div class="grid grid-cols-1 gap-6">
+                    <div
+                        class="flex items-start gap-4 p-4 rounded-xl bg-surface-container-low border border-outline-variant/30">
+                        <div class="p-2 bg-primary-container rounded-lg">
+                            <span class="material-symbols-outlined text-white" data-icon="security">security</span>
+                        </div>
+                        <div>
+                            <h3 class="font-h3 text-on-surface text-base">Bank-Level Security</h3>
+                            <p class="font-body-md text-on-surface-variant text-sm">Your data is encrypted with the
+                                highest industry standards.</p>
+                        </div>
+                    </div>
+                    <div
+                        class="flex items-start gap-4 p-4 rounded-xl bg-surface-container-low border border-outline-variant/30">
+                        <div class="p-2 bg-secondary-container rounded-lg">
+                            <span class="material-symbols-outlined text-on-secondary-container"
+                                data-icon="insights">insights</span>
+                        </div>
+                        <div>
+                            <h3 class="font-h3 text-on-surface text-base">Smart Insights</h3>
+                            <p class="font-body-md text-on-surface-variant text-sm">AI-driven analytics to help you save
+                                more every month.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative h-64 rounded-2xl overflow-hidden shadow-2xl">
+                    <img class="absolute inset-0 w-full h-full object-cover"
+                        data-alt="Professional workspace with laptop showing financial charts, clean minimalist desk, warm afternoon sunlight casting soft shadows"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBi75E5758zITMcn6mHS8HzR3oLm9aRJkNM4sJFx0XGP3BAGVS-vbeEHXx_jK9LV_8ZD2fnI2eIAJ45vxHX-a8QylpVOIZSYE2F98NxROdXvbNHWOYInyLVahX7dJIBDVHjPVqA_wkvbHeEsOY8PYrARv9tQsKbv-MqUzC-3aJJPdMFGWu3Jo4hsP8-jByjHdyW8-y-S1BDklfgcNtQhZr9TkkvZHklgS2IqH2NQlB47R5cj-Ux2T1TPSITcdpOYYdz9EkPDqc9hbM" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6 text-white">
+                        <p class="font-h3 text-lg italic">"The most intuitive financial tool I've used in a decade of
+                            accounting."</p>
+                        <p class="font-body-md text-sm mt-2 opacity-80">— Chief Financial Officer, TechCorp</p>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full max-w-md mx-auto">
+                <div class="bg-white rounded-2xl auth-card-shadow border border-outline-variant/50 overflow-hidden">
+                    <div class="flex border-b border-outline-variant/30">
+                        <button
+                            class="flex-1 py-4 text-sm font-semibold text-primary border-b-2 border-primary bg-surface-container-lowest transition-all">Sign
+                            In</button>
+                        <button
+                            class="flex-1 py-4 text-sm font-semibold text-on-surface-variant hover:bg-surface-container-low transition-all">Register</button>
+                    </div>
+                    <div class="p-8 space-y-6">
+                        <div class="space-y-2 text-center">
+                            <h2 class="font-h2 text-on-surface">Welcome Back</h2>
+                            <p class="font-body-md text-on-surface-variant">Please enter your details to access your
+                                account.</p>
+                        </div>
+                        <form class="space-y-5">
+                            <div class="space-y-2">
+                                <label class="font-label-sm text-on-surface-variant" for="email">Email Address</label>
+                                <div class="relative">
+                                    <span
+                                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg"
+                                        data-icon="mail">mail</span>
+                                    <input
+                                        class="w-full pl-10 pr-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-body-md"
+                                        id="email" placeholder="name@company.com" type="email" />
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center">
+                                    <label class="font-label-sm text-on-surface-variant" for="password">Password</label>
+                                    <a class="font-label-sm text-primary hover:underline transition-all" href="#">Forgot
+                                        Password?</a>
+                                </div>
+                                <div class="relative">
+                                    <span
+                                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg"
+                                        data-icon="lock">lock</span>
+                                    <input
+                                        class="w-full pl-10 pr-12 py-3 bg-surface-container-low border border-outline-variant rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-body-md"
+                                        id="password" placeholder="••••••••" type="password" />
+                                    <button
+                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-outline hover:text-on-surface transition-colors"
+                                        type="button">
+                                        <span class="material-symbols-outlined text-lg"
+                                            data-icon="visibility">visibility</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <input class="w-4 h-4 text-primary border-outline-variant rounded focus:ring-primary"
+                                    id="remember" type="checkbox" />
+                                <label class="font-body-md text-sm text-on-surface-variant" for="remember">Keep me
+                                    logged in for 30 days</label>
+                            </div>
+                            <button
+                                class="w-full py-4 bg-primary text-white font-h3 text-base rounded-xl hover:bg-primary-container active:scale-[0.98] transition-all shadow-lg shadow-primary/20"
+                                type="submit">
                                 Sign In
                             </button>
-</form>
-<div class="relative">
-<div class="absolute inset-0 flex items-center"><div class="w-full border-t border-outline-variant/30"></div></div>
-<div class="relative flex justify-center text-xs"><span class="bg-white px-2 text-outline font-label-sm">OR CONTINUE WITH</span></div>
-</div>
-<div class="grid grid-cols-2 gap-4">
-<button class="flex items-center justify-center gap-2 py-3 border border-outline-variant rounded-xl hover:bg-surface-container-low transition-all">
-<img alt="Google Logo" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtiGMiv9OegaNDAWKiZdwfHuA5Z5mUB46s-bxuWNSCbggdbvNNKfKOBg03b-3RpQMFZ0UHTvHk9B3Uv6p3bMGo8ulOAJq5LW71hOC4ysOpvT9-uQr18hTR94IWVOkOtkVwoEr2IsKxoPs-FaWHvM_yqgIViDW59LfCQAIgPsGhyxvfdASr4tBTEfLMREslQjrDUc3eqJpYzdaw8lLroA40m5UQDEluqFVe_lmvMELUsbVoxcnbbp2QMdOCN64wsYBK0HW0cxh24a4"/>
-<span class="font-body-md text-sm font-medium">Google</span>
-</button>
-<button class="flex items-center justify-center gap-2 py-3 border border-outline-variant rounded-xl hover:bg-surface-container-low transition-all">
-<span class="material-symbols-outlined text-xl" data-icon="apple" data-weight="fill">ios</span>
-<span class="font-body-md text-sm font-medium">Apple</span>
-</button>
-</div>
-</div>
-<div class="bg-surface-container-low p-6 text-center border-t border-outline-variant/30">
-<p class="font-body-md text-sm text-on-surface-variant">
-                            Don't have an account? <a class="text-primary font-semibold hover:underline" href="#">Create Account</a>
-</p>
-</div>
-</div>
-</div>
-</div>
-</main>
-<footer class="bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 py-6">
-<div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-4">
-<p class="text-sm font-manrope text-slate-500 dark:text-slate-400">© 2024 FinBalance Inc. All rights reserved.</p>
-<div class="flex gap-6">
-<a class="text-sm font-manrope text-slate-500 hover:text-slate-900 transition-all hover:underline" href="#">Privacy Policy</a>
-<a class="text-sm font-manrope text-slate-500 hover:text-slate-900 transition-all hover:underline" href="#">Terms of Service</a>
-<a class="text-sm font-manrope text-slate-500 hover:text-slate-900 transition-all hover:underline" href="#">Help Center</a>
-</div>
-</div>
-</footer>
-</body></html>
+                        </form>
+                        <div class="relative">
+                            <div class="absolute inset-0 flex items-center">
+                                <div class="w-full border-t border-outline-variant/30"></div>
+                            </div>
+                            <div class="relative flex justify-center text-xs"><span
+                                    class="bg-white px-2 text-outline font-label-sm">OR CONTINUE WITH</span></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button
+                                class="flex items-center justify-center gap-2 py-3 border border-outline-variant rounded-xl hover:bg-surface-container-low transition-all">
+                                <img alt="Google Logo" class="w-5 h-5"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtiGMiv9OegaNDAWKiZdwfHuA5Z5mUB46s-bxuWNSCbggdbvNNKfKOBg03b-3RpQMFZ0UHTvHk9B3Uv6p3bMGo8ulOAJq5LW71hOC4ysOpvT9-uQr18hTR94IWVOkOtkVwoEr2IsKxoPs-FaWHvM_yqgIViDW59LfCQAIgPsGhyxvfdASr4tBTEfLMREslQjrDUc3eqJpYzdaw8lLroA40m5UQDEluqFVe_lmvMELUsbVoxcnbbp2QMdOCN64wsYBK0HW0cxh24a4" />
+                                <span class="font-body-md text-sm font-medium">Google</span>
+                            </button>
+                            <button
+                                class="flex items-center justify-center gap-2 py-3 border border-outline-variant rounded-xl hover:bg-surface-container-low transition-all">
+                                <span class="material-symbols-outlined text-xl" data-icon="apple"
+                                    data-weight="fill">ios</span>
+                                <span class="font-body-md text-sm font-medium">Apple</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-surface-container-low p-6 text-center border-t border-outline-variant/30">
+                        <p class="font-body-md text-sm text-on-surface-variant">
+                            Don't have an account? <a class="text-primary font-semibold hover:underline" href="#">Create
+                                Account</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 py-6">
+        <div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-sm font-manrope text-slate-500 dark:text-slate-400">© 2024 FinBalance Inc. All rights
+                reserved.</p>
+            <div class="flex gap-6">
+                <a class="text-sm font-manrope text-slate-500 hover:text-slate-900 transition-all hover:underline"
+                    href="#">Privacy Policy</a>
+                <a class="text-sm font-manrope text-slate-500 hover:text-slate-900 transition-all hover:underline"
+                    href="#">Terms of Service</a>
+                <a class="text-sm font-manrope text-slate-500 hover:text-slate-900 transition-all hover:underline"
+                    href="#">Help Center</a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

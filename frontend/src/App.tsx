@@ -10,7 +10,7 @@ import About from './pages/About';
 import AuditLogs from './pages/AuditLogs';
 import Login from './pages/Login';
 import Register from './pages/Register';
-
+import { MdLogout } from "react-icons/md";
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, loading } = useContext(AuthContext);
   const location = useLocation();
@@ -42,11 +42,11 @@ function MainLayout({ children }: { children: React.ReactNode }) {
       <aside className="fixed left-0 top-0 h-full w-72 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 z-50 overflow-y-auto transition-colors duration-200">
         <div className="flex flex-col h-full p-6 space-y-8">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-blue-600 dark:bg-primary-container flex items-center justify-center">
-              <MdAccountBalance className="text-white text-xl" />
+            <div className="w-10 h-10 flex items-center justify-center">
+              <img src="logo.png" alt="Logo" />
             </div>
             <div>
-              <h1 className="text-2xl font-black text-slate-800 dark:text-primary">Budget Tracker</h1>
+              <h1 className="text-2xl font-black text-slate-800 dark:text-primary">SaveSmart</h1>
             </div>
           </div>
 
@@ -75,8 +75,11 @@ function MainLayout({ children }: { children: React.ReactNode }) {
 
 
           <div className="pt-6 border-t border-slate-200 dark:border-slate-800 space-y-2 transition-colors duration-200">
-            <button onClick={logout} className="w-full flex items-center gap-3 text-rose-500 dark:text-red-400 px-4 py-2.5 font-manrope font-medium text-[14px] hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-lg transition-all">
-              <MdSettings className="text-xl" />
+            <button
+              onClick={logout}
+              className="w-full flex items-center gap-3 text-rose-500 dark:text-red-400 px-4 py-2.5 font-manrope font-medium text-[14px] hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-lg transition-all"
+            >
+              <MdLogout className="text-xl" />
               <span>Logout</span>
             </button>
           </div>
